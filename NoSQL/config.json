@@ -1,0 +1,25 @@
+{
+    "couchdb": {
+        
+        "host": "127.0.0.1",
+        "port": 5984,
+        "dbname": "testdb",
+        "user": "",
+        "password": ""
+    },
+    
+    "mongodb": {
+        
+        "host": "localhost",
+        "port": 27017,
+        "dbname": "testdb",
+        "collection": "test_collection"
+    },
+    
+    "postgresql": {
+        
+        "url": "jdbc:postgresql://localhost/avilar",
+        "user": "avilar",
+        "password": "x11y85aa"
+    }        
+}
