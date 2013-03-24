@@ -1,21 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package postgresjobs;
 
+import basejobs.IDatabaseJob;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import basejobs.IDatabaseJob;
 
 /**
- *
- * @author test
+ * Zadanie mające na celu zbudowanie w bazie danych PostgreSQL schematu 
+ * na którym bedą operowały pozostałe testy.
+ * 
+ * Utworzenie tabeli do któej będą insertowane później dokumenty przez
+ * pozostałe zadania testowe.
+ * 
+ * @author Kamil Szostakowski
  */
+
 public class PostgresSchemaJob extends PostgresBaseJob
 {
     private String schema = "CREATE TABLE document(id integer NOT NULL, threadid integer, title character varying(200), content text)";
+    
+    /*
+     * Utworzenie tabeli na dokumenty.
+     */    
     
     public void PerformInsertOperation(int identifier)   
     {
@@ -29,6 +35,11 @@ public class PostgresSchemaJob extends PostgresBaseJob
             Logger.getLogger(PostgresTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }
+    
+    /*
+     * Metoda pozwalająca stworzyć instancję tego zadania 
+     * do uruchomienia w innym wątku.
+     */    
     
     public IDatabaseJob Clone()
     {

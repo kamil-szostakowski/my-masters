@@ -1,25 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mongojobs;
 
 import basejobs.BaseJob;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import runs.IDatabaseRun;
 import tools.Configuration;
 
 /**
- *
- * @author test
+ * Metoda dostarczająca podstawowych mechanizmów dla wszystkich
+ * zadań wykonywanych na bazie MongoDB
+ * 
+ * Wczytanie informacji o konfiguracji MongoDB z pliku konfiguracyjnego
+ * 
+ * Dostarcza metodę do zestawienia połączenia z bazą danych CouchDB
+ * 
+ * Dostarcza metodę do likwidacji połaczenia z bazą danych.
+ * 
+ * @author Kamil Szostakowski
  */
+
 public abstract class MongodbBaseJob extends BaseJob
 {
     protected MongoClient client;
@@ -30,6 +32,10 @@ public abstract class MongodbBaseJob extends BaseJob
     private Long port = (Long) Configuration.GetParam("mongodb:port");
     private String dbname = (String) Configuration.GetParam("mongodb:dbname");
     private String collectionName = (String) Configuration.GetParam("mongodb:collection");
+    
+    /*
+     * Metoda zestawiająca połaczenie z bazą danych MongoDB
+     */    
     
     @Override
     public void Connect() 
@@ -56,6 +62,11 @@ public abstract class MongodbBaseJob extends BaseJob
         }
     }
 
+    /*
+     * Metoda pozwalająca stworzyć instancję tego zadania 
+     * do uruchomienia w innym wątku.
+     */     
+    
     @Override
     public void Disconnect() 
     {        

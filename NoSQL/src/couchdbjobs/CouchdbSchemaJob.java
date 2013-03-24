@@ -1,16 +1,33 @@
 package couchdbjobs;
 
+import basejobs.IDatabaseJob;
 import java.util.HashMap;
 import java.util.Map;
-import basejobs.IDatabaseJob;
 
 /**
- *
- * @author test
+ * Zadanie mające na celu zbudowanie w bazie danych CouchDB schematu 
+ * na którym bedą operowały pozostałe testy.
+ * 
+ * Zadanie definiuje wszystkie widoki na podstawie których będzie można
+ * dokonywać pobierania dokumentów z bazy.
+ * 
+ * @author Kamil Szostakowski
  */
 
 public class CouchdbSchemaJob extends CouchdbBaseJob
 {
+    /*
+     * Metoda definiujące sposób wykonania metody insert dla tego zadania.
+     * 
+     * Do bazy dodawany jest dokument definiujacy trzy następujące widoku
+     * 
+     * - widok pozwalający na pobrania ze bazy danych wszystkich dokumentów
+     * - widok pozwalający na pobranie z bazy danych dokumentów
+     * o parzystych identyfikatorach.
+     * - widok pozwalający na pobranie z bazy danych dokumentów o 
+     * nieparzystych identyfikatorach.
+     */
+    
     public void PerformInsertOperation(int identifier)
     {              
        Map<String, Object> viewAll = new HashMap<>(); viewAll.put("map", "function(doc) { emit(doc.id, null) }");
@@ -31,6 +48,11 @@ public class CouchdbSchemaJob extends CouchdbBaseJob
             
        this.db.createDocument(document);                          
     }
+    
+    /*
+     * Metoda pozwalająca stworzyć instancję tego zadania 
+     * do uruchomienia w innym wątku.
+     */    
     
     public IDatabaseJob Clone()
     {

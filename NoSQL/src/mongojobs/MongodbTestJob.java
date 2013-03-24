@@ -1,34 +1,26 @@
 package mongojobs;
 
 import basejobs.IDatabaseJob;
-import basejobs.BaseJob;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoException;
-import com.mongodb.WriteConcern;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.mongodb.DBCursor;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.ServerAddress;
-import com.mongodb.util.JSONSerializers;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.UnknownHostException;
-
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import tools.Configuration;
 
 /**
- *
- * @author test
+ * Właściwe zadanie testowe dla bazy MongoDB mierzącej jej wydajność
+ * podczas wykonywania operacji select/insert w proporcjach zdefiniowanych
+ * przez przebieg przypisany tenu zadaniu.
+ * 
+ * @author Kamil Szostakowski
  */
 
 public class MongodbTestJob extends MongodbBaseJob
-{            
+{        
+    /*
+     * Metoda definiująca operację pobrania dokumentu z bazy danych.
+     */
+    
     public int PerformSelectOperation(int identifier)
     {            
         BasicDBObject query = new BasicDBObject("id", new BasicDBObject("$in", this.GetDocumentListForIter(identifier)));
@@ -37,6 +29,10 @@ public class MongodbTestJob extends MongodbBaseJob
         
         return cursor.count();
     }
+    
+    /*
+     * Metoda definiująca operację wstawienie dokumentu do bazy danych.
+     */     
     
     public void PerformInsertOperation(int identifier)
     {
@@ -57,6 +53,11 @@ public class MongodbTestJob extends MongodbBaseJob
             Logger.getLogger(MongodbTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /*
+     * Metoda pozwalająca stworzyć instancję tego zadania 
+     * do uruchomienia w innym wątku.
+     */     
     
     public IDatabaseJob Clone()
     {

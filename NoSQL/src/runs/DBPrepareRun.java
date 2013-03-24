@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package runs;
 
 import java.io.BufferedReader;
@@ -12,8 +8,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author test
+ * Klasa definiująca przebieg dla zadania PrepareDatabase.
+ * 
+ * Przebieg definiuje sposób w jaki ma zostać przygotowana
+ * baza danych pod późniejsze testy.
+ * 
+ * @author Kamil Szostakowski
  */
 public class DBPrepareRun implements IDatabaseRun
 {

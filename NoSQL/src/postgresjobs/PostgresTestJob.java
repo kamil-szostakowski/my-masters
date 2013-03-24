@@ -1,24 +1,18 @@
 package postgresjobs;
 
-import basejobs.BaseJob;
-import java.io.FileNotFoundException;
+import basejobs.IDatabaseJob;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import basejobs.IDatabaseJob;
-import tools.Configuration;
 import tools.StringTools;
 
 /**
- *
- * @author test
+ * Właściwe zadanie testowe dla bazy PostgreSQL mierzącej jej wydajność
+ * podczas wykonywania operacji select/insert w proporcjach zdefiniowanych
+ * przez przebieg przypisany tenu zadaniu.
+ * 
+ * @author Kamil Szostakowski
  */
 
 public class PostgresTestJob extends PostgresBaseJob
@@ -29,6 +23,10 @@ public class PostgresTestJob extends PostgresBaseJob
     
     private String query = "INSERT INTO document (id, threadid, title, content) VALUES(%d, %d, '%s', '%s')";    
     private String select = "SELECT * FROM document where id IN (%s)";           
+    
+    /*
+     * Metoda definiująca operację pobrania dokumentu z bazy danych.
+     */    
     
     public int PerformSelectOperation(int identifier)
     {
@@ -45,6 +43,10 @@ public class PostgresTestJob extends PostgresBaseJob
         return 0;
     }
     
+    /*
+     * Metoda definiująca operację wstawienie dokumentu do bazy danych.
+     */      
+    
     public void PerformInsertOperation(int identifier)
     {
         try 
@@ -60,6 +62,11 @@ public class PostgresTestJob extends PostgresBaseJob
             Logger.getLogger(PostgresTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /*
+     * Metoda pozwalająca stworzyć instancję tego zadania 
+     * do uruchomienia w innym wątku.
+     */      
     
     public IDatabaseJob Clone()
     {

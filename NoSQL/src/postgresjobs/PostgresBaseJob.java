@@ -1,22 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package postgresjobs;
 
+import basejobs.BaseJob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import basejobs.BaseJob;
 import tools.Configuration;
 
 /**
- *
- * @author test
+ * Metoda dostarczająca podstawowych mechanizmów dla wszystkich
+ * zadań wykonywanych na bazie PostgreSQL
+ * 
+ * Wczytanie informacji o konfiguracji PostgreSQL z pliku konfiguracyjnego
+ * 
+ * Dostarcza metodę do zestawienia połączenia z bazą danych PostgreSQL
+ * 
+ * Dostarcza metodę do likwidacji połaczenia z bazą danych.
+ * 
+ * @author Kamil Szostakowski
  */
+
 public abstract class PostgresBaseJob extends BaseJob
 {
     protected Connection connection = null;
@@ -26,7 +31,9 @@ public abstract class PostgresBaseJob extends BaseJob
     private String user = (String) Configuration.GetParam("postgresql:user"); //"postgres";
     private String password = (String) Configuration.GetParam("postgresql:password"); //"kamil123";     
     
-    // Metoda dokonująca zestawienia połączenia z bazą danych
+    /*
+     * Metoda zestawiająca połaczenie z bazą danych PostgreSQL
+     */     
     
     @Override
     public void Connect() 
@@ -45,7 +52,10 @@ public abstract class PostgresBaseJob extends BaseJob
         }    
     }
 
-    // Metoda kończąca połączenie z bazą danych
+    /*
+     * Metoda pozwalająca stworzyć instancję tego zadania 
+     * do uruchomienia w innym wątku.
+     */     
     
     @Override
     public void Disconnect() 

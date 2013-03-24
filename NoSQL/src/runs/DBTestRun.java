@@ -8,8 +8,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author test
+ * Podstawowy przebieg testowy definiujący zachowanie
+ * zadanie testowego podczas jego wykonywania na bazie 
+ * danych.
+ * 
+ * @author Kamil Szostakowski
  */
 public class DBTestRun implements IDatabaseRun
 {
@@ -20,31 +23,55 @@ public class DBTestRun implements IDatabaseRun
         _content = null;        
     }
     
+    /*
+     * Pojedyńcza operacja select składa się z pobrania 100 losowych dokumentów.
+     */
+    
     @Override
     public int GetSelectDocumentCount()
     {
         return 100;
     }    
     
+    /*
+     * Nie testeujemy operacji insert.
+     */
+    
     public int GetSelectRate()
+    {
+        return 0;
+    }   
+    
+    /*
+     * Dokonujemy tylko operacji insert.
+     */    
+    
+    public int GetInsertRate()
     {
         return 100;
     }
     
-    public int GetInsertRate()
-    {
-        return 0;
-    }
+    /*
+     * Przeprowadzam testy na 6 wątkach.
+     */
     
     public int GetNumberOfThreads()
     {
         return 6;
     }
     
+    /*
+     * Każdy wątek wykona 100 operacji.
+     */
+    
     public int GetRepeatCount()
     {
         return 100;
     }
+    
+    /*
+     * Treść insertowanych dokumentów zostanie wczytana z pliku.
+     */
     
     public String GetContent(int iter) throws FileNotFoundException, IOException
     {
