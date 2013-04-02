@@ -1,6 +1,6 @@
 {
-    "select_rate": 0,
-    "insert_rate": 100,
+    "select_rate": 50,
+    "insert_rate": 50,
     "threads": 6,
     "iterations": 50,
     "documents_per_select": 20
