@@ -25,6 +25,16 @@ public class PostgresTestJob extends PostgresBaseJob
     private String select = "SELECT * FROM document where id IN (%s)";           
     
     /*
+     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
+     * z logami.
+     */
+    
+    public String GetName()
+    {
+        return "postgresql-test";
+    }      
+    
+    /*
      * Metoda definiująca operację pobrania dokumentu z bazy danych.
      */    
     

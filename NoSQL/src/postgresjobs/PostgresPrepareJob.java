@@ -17,6 +17,16 @@ import basejobs.IDatabaseJob;
 public class PostgresPrepareJob extends PostgresTestJob
 {    
     /*
+     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
+     * z logami.
+     */
+    
+    public String GetName()
+    {
+        return "postgresql-prepare";
+    }   
+    
+    /*
      * Metoda pozwalająca stworzyć instancję tego zadania 
      * do uruchomienia w innym wątku.
      */

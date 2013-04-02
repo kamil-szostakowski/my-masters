@@ -1,6 +1,7 @@
 package mongojobs;
 
 import basejobs.BaseJob;
+import basejobs.LogEntry;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
@@ -41,18 +42,28 @@ public abstract class MongodbBaseJob extends BaseJob
     public void Connect() 
     {
         try 
-        {                     
+        {              
+            LogEntry entry = new LogEntry();
+        
+            entry.SetOperationType("ConnectionEstablished");
+            entry.SetOperationTime(0);
+            entry.SetThreadId(this.threadID);             
+            
             this.client = new MongoClient(host, port.intValue());
                 
-            this.WriteLog("MongoDB: connection established");
+            this.WriteLog(entry);
                 
             this.db = client.getDB(dbname);
                 
-            this.WriteLog("MongoDB: database selected");
+            entry.SetOperationType("DatabaseSelected");
+            
+            this.WriteLog(entry);
                 
             this.collection = this.db.getCollection(collectionName);        
+            
+            entry.SetOperationType("CollectionSelected");
                 
-            this.WriteLog("MongoDB: collection got");
+            this.WriteLog(entry);
             
         } 
         

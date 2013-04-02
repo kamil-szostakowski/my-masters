@@ -12,6 +12,16 @@ import basejobs.IDatabaseJob;
 public class MongodbSchemaJob extends MongodbBaseJob
 {
     /*
+     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
+     * z logami.
+     */
+    
+    public String GetName()
+    {
+        return "mongodb-schema";
+    }   
+    
+    /*
      * Na obecnym poziomie żadne dodatkowe definicje nie są potrzebne.
      */
     

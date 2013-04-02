@@ -1,20 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package nosql;
 
-import runs.DBPrepareRun;
-import runs.DBTestRun;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import basejobs.IDatabaseJob;
-import runs.DBSchemaRun;
-import runs.IDatabaseRun;
+
+import java.io.IOException;
+
 import tools.Configuration;
+
+import com.sun.net.httpserver.HttpServer;
+import http.handlers.CouchdbJobRequest;
+import http.handlers.MongodbJobRequest;
+import http.handlers.PostgresqlJobRequest;
+import java.net.InetSocketAddress;
 
 /**
  *
@@ -22,12 +19,20 @@ import tools.Configuration;
  */
 public class NoSQL 
 {        
-    private static String HelpMSG = "help: couchdb|mongodb|postgresql --with-test --with-schema --with-prepare-data";        
+    private static String HelpMSG = "help: couchdb|mongodb|postgresql --with-test --with-schema --with-prepare-data";            
     
-    private static LinkedList<IDatabaseJob> jobs = new LinkedList<>();
-    private static LinkedList<IDatabaseRun> runs = new LinkedList<>();
+    private static HttpServer server;
     
-    // Metoda przygotowuje zadania do wykonania
+    private static void InitializeHttpServer() throws IOException
+    {
+        server = HttpServer.create(new InetSocketAddress(9090), 0);
+
+        server.createContext("/db/couchdb", new CouchdbJobRequest());
+        server.createContext("/db/mongodb", new MongodbJobRequest());
+        server.createContext("/db/postgresql", new PostgresqlJobRequest());
+        server.setExecutor(null);
+        server.start();
+    }
     
     private static void PrepareJobs(String[] args)
     {        
@@ -46,20 +51,20 @@ public class NoSQL
         
         if(withSchema)
         {
-            NoSQL.jobs.add(TestFactory.GetSchemaJob());
-            NoSQL.runs.add(new DBSchemaRun());             
+//            NoSQL.jobs.add(TestFactory.GetSchemaJob());
+//            NoSQL.runs.add(new DBSchemaRun());             
         }
         
         if(withPrepareData)
         {
-            NoSQL.jobs.add(TestFactory.GetPrepareJob());
-            NoSQL.runs.add(new DBPrepareRun());
+//            NoSQL.jobs.add(TestFactory.GetPrepareJob());
+//            NoSQL.runs.add(new DBPrepareRun());
         }
                 
         if(withTest)
         {                
-            NoSQL.jobs.add(TestFactory.GetTestJob());
-            NoSQL.runs.add(new DBTestRun());
+//            NoSQL.jobs.add(TestFactory.GetTestJob());
+//            NoSQL.runs.add(new DBTestRun());
         }
     }
     
@@ -69,29 +74,18 @@ public class NoSQL
     
     public static void main(String[] args) 
     {      
-        if(args.length < 1) 
-        { 
-            System.out.println(NoSQL.HelpMSG); 
-        }
-        
-        else
+        try 
         {
             Configuration.Prepare();
             
-            NoSQL.PrepareJobs(args);                        
-            
-            System.out.println("DBJob: started");                        
-            
-            DBTestRunner testRunner = new DBTestRunner();
-           
-            for(int iter=0; iter<NoSQL.jobs.size(); iter++)
-            {
-                testRunner.SetJob(NoSQL.jobs.get(iter));
-                testRunner.SetTest(NoSQL.runs.get(iter));
-                testRunner.RunTest();
-            }
-
-            System.out.println("DBJob: finished");            
-        }        
+            NoSQL.InitializeHttpServer();                            
+                
+            NoSQL.PrepareJobs(args);                                              
+        } 
+        
+        catch (IOException ex) 
+        {
+            Logger.getLogger(NoSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

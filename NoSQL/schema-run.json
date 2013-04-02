@@ -1,0 +1,7 @@
+{
+    "select_rate": 0,
+    "insert_rate": 100,
+    "threads": 1,
+    "iterations": 1,
+    "documents_per_select": 0
+}

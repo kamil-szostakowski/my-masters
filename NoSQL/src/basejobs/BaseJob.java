@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import runs.DBTestRun;
 import runs.IDatabaseRun;
 
 /**
@@ -39,7 +38,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
     
     private long testStart;    
     
-    private Random randomizer;    
+    private Random randomizer;  
     
     /*
      * Metoda inicjuje podsystemy wykorzystywane przez wszystkie zadania
@@ -82,7 +81,13 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
         long testFinish = System.currentTimeMillis();
         long testExecutionTime = testFinish-this.testStart;   
         
-        this.WriteLog(String.format("Test finished %d miliseconds", testExecutionTime));
+        LogEntry entry = new LogEntry();
+        
+        entry.SetOperationType("TestFinish");
+        entry.SetThreadId(this.threadID);
+        entry.SetOperationTime(testExecutionTime);
+        
+        this.WriteLog(entry);
         
         try 
         {
@@ -102,13 +107,13 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
      * typu zadania wykonywanego na bazie danych oraz wątku który to zadanie wykonuje.
      */
     
-    protected void WriteLog(String text)
+    protected void WriteLog(ILogEntry entry)
     {
         if(this.output == null) { return; }
         
         try 
-        {
-            this.output.write(String.format("Thread %d: %s\n", this.threadID, text));
+        {                     
+            this.output.write(entry.toString());
             this.output.newLine();
         } 
         
@@ -182,10 +187,16 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
         
         this.testStart = System.currentTimeMillis();        
         
-        this.WriteLog("Test started");
+        LogEntry entry = new LogEntry();
+        
+        entry.SetOperationType("TestStarted");
+        entry.SetOperationTime(0);
+        entry.SetThreadId(this.threadID);        
+        
+        this.WriteLog(entry);
         
         for(int iter=0; iter<test.GetRepeatCount(); iter++)
-        {
+        {            
             long start = System.currentTimeMillis();
             String operationType;
             String extra;
@@ -203,13 +214,25 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
             {
                 int selected = this.PerformSelectOperation(iter);
                 operationType = "select";
-                extra = String.format("selected %d documents", selected);
+                extra = String.format("%d", selected);
             }                        
             
             long finish = System.currentTimeMillis();
             long executionTime = finish-start;
             
-            this.WriteLog(String.format("Operation[%s] %d finished in %d miliseconds %s",operationType, iter, executionTime, extra));
+            LogEntry opEntry = new LogEntry();
+            
+            opEntry.SetOperationType(operationType);
+            opEntry.SetOperationTime(executionTime);
+            opEntry.SetThreadId(this.threadID);
+            opEntry.SetParameter("iteration", String.format("%d", iter));
+            
+            if(!extra.equals(""))
+            {
+                entry.SetParameter("selected", extra);
+            }
+            
+            this.WriteLog(opEntry);
         }                
         
         System.out.println(String.format("Thread name: %s id: %d finished", this.getClass().toString(), this.threadID));
@@ -258,5 +281,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
         {
             Logger.getLogger(CouchdbTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    } 
+    
+    
 }

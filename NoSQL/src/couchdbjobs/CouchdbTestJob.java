@@ -19,7 +19,17 @@ import tools.StringTools;
  */
 
 public class CouchdbTestJob extends CouchdbBaseJob  
-{          
+{       
+    /*
+     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
+     * z logami.
+     */
+    
+    public String GetName()
+    {
+        return "couchdb-test";
+    }
+    
     /*
      * Metoda definiująca operację pobrania dokumentu z bazy danych.
      */

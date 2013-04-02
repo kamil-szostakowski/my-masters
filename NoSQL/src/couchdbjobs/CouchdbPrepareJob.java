@@ -16,6 +16,16 @@ import basejobs.IDatabaseJob;
 public class CouchdbPrepareJob extends CouchdbTestJob
 {   
     /*
+     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
+     * z logami.
+     */
+    
+    public String GetName()
+    {
+        return "couchdb-prepare";
+    }
+    
+    /*
      * Metoda pozwalająca stworzyć instancję tego zadania 
      * do uruchomienia w innym wątku.
      */

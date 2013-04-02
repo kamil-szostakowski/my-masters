@@ -81,4 +81,11 @@ public interface IDatabaseJob
      */
     
     public IDatabaseJob Clone();
+    
+    /*
+     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
+     * z logami.
+     */
+    
+    public String GetName();
 }

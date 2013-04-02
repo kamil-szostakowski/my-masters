@@ -1,6 +1,7 @@
 package postgresjobs;
 
 import basejobs.BaseJob;
+import basejobs.LogEntry;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -43,7 +44,13 @@ public abstract class PostgresBaseJob extends BaseJob
             this.connection = DriverManager.getConnection(this.url, this.user, this.password);
             this.statement = this.connection.createStatement();        
             
-            this.WriteLog("PostgresDB: connection established");
+            LogEntry connectionEntry = new LogEntry();
+        
+            connectionEntry.SetOperationType("ConnectionEstablished");
+            connectionEntry.SetOperationTime(0);
+            connectionEntry.SetThreadId(this.threadID);             
+            
+            this.WriteLog(connectionEntry);
         } 
         
         catch (SQLException ex) 

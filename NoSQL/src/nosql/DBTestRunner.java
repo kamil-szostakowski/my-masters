@@ -1,14 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package nosql;
 
-import java.awt.List;
+import basejobs.IDatabaseJob;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import basejobs.BaseJob;
-import basejobs.IDatabaseJob;
 import runs.IDatabaseRun;
 
 /**
@@ -32,33 +26,28 @@ public class DBTestRunner
     }
     
     public void RunTest()
-    {
-        this.threads = new Thread[test.GetNumberOfThreads()];
+    {        
+        try
+        {
+            this.threads = new Thread[test.GetNumberOfThreads()];
         
-        for(int iter=0; iter<test.GetNumberOfThreads(); iter++)
-        {                                                    
-            this.threads[iter] = new Thread((Runnable)this.job);
-                
-            this.job.SetThreadID(iter);            
-            this.job.SetLogFile(String.format("%s-thread-%d.log", this.job.getClass().toString(), iter));
-            this.job.SetConfiguration(test);
-                
-            this.threads[iter].start();  
+            for(int iter=0; iter<test.GetNumberOfThreads(); iter++)
+            {                                                    
+                this.threads[iter] = new Thread((Runnable)this.job);
             
-            this.job = this.job.Clone();
+                this.job.SetThreadID(iter);            
+                this.job.SetLogFile(String.format("%s-thread-%d.log", this.job.GetName(), iter));
+                this.job.SetConfiguration(test);
+                
+                this.threads[iter].start();  
+            
+                this.job = this.job.Clone();
+            }
         }
         
-        for(int iter=0; iter<test.GetNumberOfThreads(); iter++)
+        catch (Exception ex)
         {
-            try 
-            {
-                this.threads[iter].join();
-            } 
-            
-            catch (InterruptedException ex) 
-            {
-                Logger.getLogger(DBTestRunner.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }                 
+              Logger.getLogger(DBTestRunner.class.getName()).log(Level.SEVERE, null, ex);      
+        }
     }
 }

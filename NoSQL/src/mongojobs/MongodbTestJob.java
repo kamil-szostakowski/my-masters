@@ -16,7 +16,17 @@ import java.util.logging.Logger;
  */
 
 public class MongodbTestJob extends MongodbBaseJob
-{        
+{      
+    /*
+     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
+     * z logami.
+     */
+    
+    public String GetName()
+    {
+        return "mongodb-test";
+    }   
+    
     /*
      * Metoda definiująca operację pobrania dokumentu z bazy danych.
      */

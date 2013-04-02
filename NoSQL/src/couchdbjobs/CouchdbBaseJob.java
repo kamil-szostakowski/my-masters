@@ -1,6 +1,7 @@
 package couchdbjobs;
 
 import basejobs.BaseJob;
+import basejobs.LogEntry;
 import org.jcouchdb.db.Database;
 import tools.Configuration;
 
@@ -30,11 +31,16 @@ public abstract class CouchdbBaseJob extends BaseJob
     
     @Override
     public void Connect() 
-    {
-        this.WriteLog("CouchDB: test started");        
+    {               
         this.db = new Database(host, port.intValue(), dbname);
         
-        this.WriteLog("CouchDB: connection established");
+        LogEntry connectionEntry = new LogEntry();
+        
+        connectionEntry.SetOperationType("ConnectionEstablished");
+        connectionEntry.SetOperationTime(0);
+        connectionEntry.SetThreadId(this.threadID);        
+        
+        this.WriteLog(connectionEntry);
     }
 
     /*
