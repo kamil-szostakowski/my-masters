@@ -22,7 +22,7 @@ public class CouchdbPrepareJob extends CouchdbTestJob
     
     public String GetName()
     {
-        return "couchdb-prepare";
+        return "mongodb-prepare";
     }
     
     /*

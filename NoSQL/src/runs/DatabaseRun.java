@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.svenson.JSONParser;
 import tools.Configuration;
+import tools.StringTools;
 
 /**
  *
@@ -50,33 +51,7 @@ public class DatabaseRun implements IDatabaseRun
         { 
             Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
         }        
-    }  
-    
-    private void ReadFile() throws IOException
-    {       
-        try 
-        {
-            StringBuffer data = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new FileReader("input2.txt"));
-            
-            char[] buffer = new char[1024];
-            int readCount = 0;
-            
-            while((readCount=reader.read(buffer)) != -1)
-            {
-                String readData = String.valueOf(buffer, 0, readCount);
-                data.append(readData);
-            }
-            
-            reader.close();
-            
-            this.content = data.toString();
-        } 
-        catch (FileNotFoundException ex) 
-        {            
-            Logger.getLogger(DatabaseRun.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }    
+    }         
     
     @Override
     public int GetSelectRate() 
@@ -111,7 +86,10 @@ public class DatabaseRun implements IDatabaseRun
     @Override
     public String GetContent(int iter) throws FileNotFoundException, IOException 
     {
-        if(content == null) { this.ReadFile(); }
+        if(content == null) 
+        { 
+            this.content = StringTools.ReadFile("input2.txt"); 
+        }
         
         return String.format("Content %d: %s", iter, content);        
     }    
