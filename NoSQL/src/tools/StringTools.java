@@ -49,5 +49,5 @@ public class StringTools
         reader.close();
             
         return data.toString();
-    }     
+    }       
 }

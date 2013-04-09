@@ -4,7 +4,7 @@
  */
 package basejobs;
 
-import couchdbjobs.CouchdbTestJob;
+import jobs.couchdb.CouchdbTestJob;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import runs.IDatabaseRun;
+import tools.StringTools;
 
 /**
  * Metoda dostarcza podstwowych mechanizmów używanych podczas 
@@ -58,9 +59,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
         {
             this.fstream = new FileWriter(this.logFilename);            
             this.output = new BufferedWriter(fstream);   
-            this.randomizer = new Random(System.nanoTime());
-            
-            this.Connect();
+            this.randomizer = new Random(System.nanoTime());                        
         } 
         
         catch (IOException ex) 
@@ -115,11 +114,12 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
         {                     
             this.output.write(entry.toString());
             this.output.newLine();
+            this.output.flush();
         } 
         
         catch (IOException ex) 
         {
-            Logger.getLogger(BaseJob.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BaseJob.class.getName()).log(Level.SEVERE, null, ex);                        
         }
     }
     
@@ -185,59 +185,62 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
         
         this.InitTest();
         
-        this.testStart = System.currentTimeMillis();        
+        if(this.Connect())
+        {        
+            this.testStart = System.currentTimeMillis();        
         
-        LogEntry entry = new LogEntry();
+            LogEntry entry = new LogEntry();
         
-        entry.SetOperationType("TestStarted");
-        entry.SetOperationTime(0);
-        entry.SetThreadId(this.threadID);        
+            entry.SetOperationType("TestStarted");
+            entry.SetOperationTime(0);
+            entry.SetThreadId(this.threadID);        
         
-        this.WriteLog(entry);
+            this.WriteLog(entry);
         
-        for(int iter=0; iter<test.GetRepeatCount(); iter++)
-        {            
-            long start = System.currentTimeMillis();
-            String operationType;
-            String extra;
+            for(int iter=0; iter<test.GetRepeatCount(); iter++)
+            {            
+                long start = System.currentTimeMillis();
+                String operationType;
+                String extra;
             
-            int rand = Math.abs(this.randomizer.nextInt(100));
+                int rand = Math.abs(this.randomizer.nextInt(100));
             
-            if(rand < this.test.GetInsertRate())
-            {
-                this.PerformInsertOperation(iter);
-                operationType = "insert";
-                extra = "";
-            }
+                if(rand < this.test.GetInsertRate())
+                {
+                    this.PerformInsertOperation(iter);
+                    operationType = "insert";
+                    extra = "";
+                }
             
-            else
-            {
-                int selected = this.PerformSelectOperation(iter);
-                operationType = "select";
-                extra = String.format("%d", selected);
-            }                        
+                else
+                {
+                    int selected = this.PerformSelectOperation(iter);
+                    operationType = "select";
+                    extra = String.format("%d", selected);
+                }                        
             
-            long finish = System.currentTimeMillis();
-            long executionTime = finish-start;
+                long finish = System.currentTimeMillis();
+                long executionTime = finish-start;
             
-            LogEntry opEntry = new LogEntry();
+                LogEntry opEntry = new LogEntry();
             
-            opEntry.SetOperationType(operationType);
-            opEntry.SetOperationTime(executionTime);
-            opEntry.SetThreadId(this.threadID);
-            opEntry.SetParameter("iteration", String.format("%d", iter));
+                opEntry.SetOperationType(operationType);
+                opEntry.SetOperationTime(executionTime);
+                opEntry.SetThreadId(this.threadID);
+                opEntry.SetParameter("iteration", String.format("%d", iter));
             
-            if(!extra.equals(""))
-            {
-                entry.SetParameter("selected", extra);
-            }
+                if(!extra.equals(""))
+                {
+                    entry.SetParameter("selected", extra);
+                }
             
-            this.WriteLog(opEntry);
-        }                
+                this.WriteLog(opEntry);
+            }                
         
-        System.out.println(String.format("Thread name: %s id: %d finished", this.getClass().toString(), this.threadID));
+            System.out.println(String.format("Thread name: %s id: %d finished", this.getClass().toString(), this.threadID));
         
-        this.CleanupTest();
+            this.CleanupTest();
+        }
     }
     
     /*
@@ -265,7 +268,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
      */
     
     @Override
-    public void run() 
+    public void run()
     {
         try 
         {
@@ -280,7 +283,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
         catch (IOException ex) 
         {
             Logger.getLogger(CouchdbTestJob.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }                
     } 
     
     

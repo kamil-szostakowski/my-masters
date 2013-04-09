@@ -1,5 +1,6 @@
 package runs;
 
+import data.source.IDataSource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -50,6 +51,13 @@ public interface IDatabaseRun
      */
     
     public int GetSelectDocumentCount();
+    
+    /*
+     * Metoda pozwalająca na ustawienie źródła danych dla danego przebiegu.
+     * Źródło danych musi zostać zdefiniowane.
+     */
+    
+    public void SetDataSource(IDataSource datasource);
     
     /*
      * Metoda powinna zwrócic content jaki ma zostać zapisany w bazie danych

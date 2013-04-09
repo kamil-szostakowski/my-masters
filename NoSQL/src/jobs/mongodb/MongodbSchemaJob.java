@@ -1,4 +1,4 @@
-package mongojobs;
+package jobs.mongodb;
 
 import basejobs.IDatabaseJob;
 

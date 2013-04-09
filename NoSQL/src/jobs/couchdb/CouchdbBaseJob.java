@@ -1,4 +1,4 @@
-package couchdbjobs;
+package jobs.couchdb;
 
 import basejobs.BaseJob;
 import basejobs.LogEntry;
@@ -30,7 +30,7 @@ public abstract class CouchdbBaseJob extends BaseJob
      */
     
     @Override
-    public void Connect() 
+    public boolean Connect() 
     {               
         this.db = new Database(host, port.intValue(), dbname);
         
@@ -41,6 +41,8 @@ public abstract class CouchdbBaseJob extends BaseJob
         connectionEntry.SetThreadId(this.threadID);        
         
         this.WriteLog(connectionEntry);
+        
+        return true;
     }
 
     /*

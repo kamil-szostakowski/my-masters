@@ -18,8 +18,8 @@
     
     "postgresql": {
         
-        "url": "jdbc:postgresql://localhost/avilar",
-        "user": "avilar",
-        "password": "x11y85aa"
+        "url": "jdbc:postgresql://localhost/testdb",
+        "user": "postgres",
+        "password": "kamil123"
     }        
 }

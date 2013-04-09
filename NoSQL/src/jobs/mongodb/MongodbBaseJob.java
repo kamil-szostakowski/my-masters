@@ -1,4 +1,4 @@
-package mongojobs;
+package jobs.mongodb;
 
 import basejobs.BaseJob;
 import basejobs.LogEntry;
@@ -39,7 +39,7 @@ public abstract class MongodbBaseJob extends BaseJob
      */    
     
     @Override
-    public void Connect() 
+    public boolean Connect() 
     {
         try 
         {              
@@ -65,12 +65,23 @@ public abstract class MongodbBaseJob extends BaseJob
                 
             this.WriteLog(entry);
             
+            return true;
         } 
         
         catch (UnknownHostException ex) 
         {
-            Logger.getLogger(MongodbTestJob.class.getName()).log(Level.SEVERE, null, ex);
+            LogEntry connectionEntry = new LogEntry();
+        
+            connectionEntry.SetOperationType("DbConnection");
+            connectionEntry.SetOperationTime(0);
+            connectionEntry.SetThreadId(this.threadID);
+            connectionEntry.SetParameter("password", "no");
+            connectionEntry.SetParameter("error", ex.getMessage());
+            
+            this.WriteLog(connectionEntry);                         
         }
+        
+        return false;
     }
 
     /*

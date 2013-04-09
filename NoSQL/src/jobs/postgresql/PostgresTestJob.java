@@ -1,4 +1,4 @@
-package postgresjobs;
+package jobs.postgresql;
 
 import basejobs.IDatabaseJob;
 import java.io.IOException;

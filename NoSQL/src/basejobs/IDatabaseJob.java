@@ -52,7 +52,7 @@ public interface IDatabaseJob
      * Metoda zestawiająca polączenie z bazą danych.
      */
     
-    public void Connect();
+    public boolean Connect();
     
     /*
      * Metoda odpowiadająca za likwidację połączenia

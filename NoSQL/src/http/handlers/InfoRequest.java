@@ -83,7 +83,7 @@ public class InfoRequest implements HttpHandler
                 String content = StringTools.ReadFile(files.get(iter));
             
                 response += String.format("<thread id=\"%d\">%s</thread>", iter, content); 
-            }
+            }            
         }
         
         else
@@ -93,10 +93,10 @@ public class InfoRequest implements HttpHandler
         
         response = String.format("<job db=\"%s\" name=\"%s\" run=\"%s\">%s</job>", this.db, this.job, this.run, response);
         
-        he.sendResponseHeaders(200, response.length());
+        he.sendResponseHeaders(200, response.getBytes("UTF-8").length);        
         
         try (OutputStream os = he.getResponseBody()) 
-        {
+        {            
             os.write(response.getBytes());
         }         
         

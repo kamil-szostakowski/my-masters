@@ -1,4 +1,4 @@
-package couchdbjobs;
+package jobs.couchdb;
 
 import basejobs.IDatabaseJob;
 import java.io.IOException;

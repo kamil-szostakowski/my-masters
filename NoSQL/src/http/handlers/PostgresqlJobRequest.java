@@ -1,41 +1,43 @@
 package http.handlers;
 
-import basejobs.IDatabaseJob;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 import nosql.DBTestRunner;
-import postgresjobs.PostgresPrepareJob;
-import postgresjobs.PostgresSchemaJob;
-import postgresjobs.PostgresTestJob;
-import runs.DatabaseRun;
-import runs.IDatabaseRun;
+import jobs.postgresql.PostgresPrepareJob;
+import jobs.postgresql.PostgresSchemaJob;
+import jobs.postgresql.PostgresTestJob;
 
 /**
  *
  * @author Kamil Szostakowski
  */
-public class PostgresqlJobRequest extends BaseHttpRequest implements HttpHandler
+public class PostgresqlJobRequest extends BaseJobRequest implements HttpHandler
 {
-    private IDatabaseJob job;
-    private IDatabaseRun run;
+    /*
+     * Metoda przygotowuje zadanie które ma zostać wykonane w bazie danych.
+     */
     
-    private void PrepareJob()
+    @Override
+    protected void PrepareJob()
     {
         if(super.jobName.equals("prepare")) { this.job = new PostgresPrepareJob(); }
         if(super.jobName.equals("schema")) { this.job = new PostgresSchemaJob(); }
         if(super.jobName.equals("test")) { this.job = new PostgresTestJob(); }
-        
-        this.run = new DatabaseRun(String.format("%s-run.json", this.runName));
     }    
+    
+    /*
+     * Metoda obsługująca http request.
+     */
     
     @Override
     public void handle(HttpExchange exchange) throws IOException 
     {
         this.ParseParameters(exchange.getRequestURI().toString());
         
-        this.PrepareJob();         
+        this.PrepareJob(); 
+        this.PrepareRun();         
         
         String response = "PostgresqlPrepareJob started...";
         
@@ -45,7 +47,7 @@ public class PostgresqlJobRequest extends BaseHttpRequest implements HttpHandler
         testRunner.SetTest(this.run);
         testRunner.RunTest();          
         
-        exchange.sendResponseHeaders(200, response.length());
+        exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
         
         try (OutputStream os = exchange.getResponseBody()) 
         {
