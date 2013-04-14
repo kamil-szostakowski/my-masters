@@ -50,22 +50,13 @@ public interface IDatabaseRun
      * pobrana z bazy danych przy jednym zapytaniu select w tym przebiegu.
      */
     
-    public int GetSelectDocumentCount();
+    public int GetSelectDocumentCount();  
     
     /*
-     * Metoda pozwalająca na ustawienie źródła danych dla danego przebiegu.
-     * Źródło danych musi zostać zdefiniowane.
+     * Metoda zwraca nazwę przebiegu która jest uwzględniana w nazwie pliku
+     * z logiem wykonania zadania. Umożliwia tym samym dokładną identyfikację
+     * zadania i śledzenie jego wykonania.
      */
     
-    public void SetDataSource(IDataSource datasource);
-    
-    /*
-     * Metoda powinna zwrócic content jaki ma zostać zapisany w bazie danych
-     * podczas operacji insert wykonywanej przez zadanie w tym przebiegu.
-     * 
-     * W przyszłości należy rozwinąć tę metodę w podsystem DataSource który 
-     * pozwoli zdefiniować źródło pochodzenia danych.
-     */
-    
-    public String GetContent(int iter) throws FileNotFoundException, IOException;        
+    public String GetName();
 }

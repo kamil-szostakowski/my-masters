@@ -21,9 +21,10 @@ public class PostgresPrepareJob extends PostgresTestJob
      * z logami.
      */
     
+    @Override
     public String GetName()
     {
-        return "postgresql-prepare";
+        return "prepare";
     }   
     
     /*
@@ -31,6 +32,7 @@ public class PostgresPrepareJob extends PostgresTestJob
      * do uruchomienia w innym wątku.
      */
     
+    @Override
     public IDatabaseJob Clone()
     {
         return new PostgresPrepareJob();

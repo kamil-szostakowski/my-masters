@@ -1,5 +1,6 @@
 package basejobs;
 
+import data.source.IDataSource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import runs.IDatabaseRun;
@@ -35,6 +36,12 @@ public interface IDatabaseJob
     public void SetConfiguration(IDatabaseRun config);
     
     /*
+     * Metoda pozwala zdefiniować źródło danych dla zadania.
+     */
+    
+    public void SetDataSource(IDataSource dataSource);
+    
+    /*
      * Metoda umożliwiajaca zdefiniowanie własnego identyfikatora
      * dla wątku który będzie wykonywal to zadanie.
      */
@@ -47,6 +54,13 @@ public interface IDatabaseJob
      */
     
     public void SetLogFile(String filename);
+    
+    /*
+     * Metoda pozwalająca na zdefiniowanie identyfikatora, który będzie
+     * przyporządkowany do zadania.
+     */
+    
+    public void SetJobIdentifier(String identifier);
     
     /*
      * Metoda zestawiająca polączenie z bazą danych.
@@ -88,4 +102,10 @@ public interface IDatabaseJob
      */
     
     public String GetName();
+    
+    /*
+     * Metoda zwraca nazwę bazy danych do na której wykonywane będzie zadanie.
+     */
+    
+    public String GetDbName();    
 }

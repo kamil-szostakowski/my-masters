@@ -21,9 +21,10 @@ public class MongodbPrepareJob extends MongodbTestJob
      * z logami.
      */
     
+    @Override
     public String GetName()
     {
-        return "mongodb-prepare";
+        return "prepare";
     }    
     
     /*
@@ -31,6 +32,7 @@ public class MongodbPrepareJob extends MongodbTestJob
      * do uruchomienia w innym wątku.
      */    
     
+    @Override
     public IDatabaseJob Clone()
     {
         return new MongodbPrepareJob();

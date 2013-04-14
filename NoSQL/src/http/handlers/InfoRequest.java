@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import tools.StringTools;
@@ -21,9 +20,8 @@ import tools.StringTools;
 
 public class InfoRequest implements HttpHandler
 {
-    private String db;
-    private String job;
-    private String run;
+    private String dbName;
+    private String jobIdentifier;        
     
     List<String> files;
     
@@ -32,33 +30,44 @@ public class InfoRequest implements HttpHandler
         this.files = new LinkedList<>();
     }
     
+    /*
+     * Metoda parsuje parametry requestu.
+     */
+    
     private void ParseParameters(String uri)
     {
         String[] params = uri.split("/");
         
         for(int iter=2; iter<params.length; iter+=2)
         {                        
-            if(params[iter].equals("db")) { this.db = params[iter+1]; }
-            if(params[iter].equals("job")) { this.job = params[iter+1]; }
-            if(params[iter].equals("run")) { this.run = params[iter+1]; }
+            if(params[iter].equals("db")) { this.dbName = params[iter+1]; }
+            if(params[iter].equals("id")) { this.jobIdentifier = params[iter+1]; }
         }
     } 
+    
+    /*
+     * Metoda czyta katalog z logami.
+     */
     
     private void ReadDir()
     {
         try
         {
-            File dir = new File(".");
-            File[] contents = dir.listFiles();
-        
-            for(int iter=0; iter<contents.length; iter++)
-            {
-                String filename = contents[iter].getName();
-                
-                if(filename.contains(String.format("%s-%s", db, job)))
-                {                    
-                    this.files.add(filename);
-                }                                            
+            File dir = new File(String.format("Logs/%s/%s/", this.dbName, this.jobIdentifier));
+            
+            if(dir.exists())
+            {                
+                File[] contents = dir.listFiles();                    
+            
+                for(int iter=0; iter<contents.length; iter++)
+                {
+                    String filename = contents[iter].getName();
+                    
+                    if(filename.contains(".log"))
+                    {                        
+                        this.files.add(String.format("%s/%s", dir.getPath(), filename));                          
+                    }
+                }
             }
         }
         
@@ -78,20 +87,20 @@ public class InfoRequest implements HttpHandler
         
         if(this.files.size() > 0)
         {
-            for(int iter=0; iter<files.size(); iter++)
+            for(int iter=0; iter<this.files.size(); iter++)
             {                        
-                String content = StringTools.ReadFile(files.get(iter));
-            
+                String content = StringTools.ReadFile(this.files.get(iter));
+                
                 response += String.format("<thread id=\"%d\">%s</thread>", iter, content); 
-            }            
+            }        
+            
+            response = String.format("<job db=\"%s\" name=\"%s\" run=\"%s\">%s</job>", null, null, null, response);
         }
         
         else
         {
             response = "No such job found";
-        }            
-        
-        response = String.format("<job db=\"%s\" name=\"%s\" run=\"%s\">%s</job>", this.db, this.job, this.run, response);
+        }                            
         
         he.sendResponseHeaders(200, response.getBytes("UTF-8").length);        
         

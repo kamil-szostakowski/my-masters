@@ -16,15 +16,17 @@ public class MongodbSchemaJob extends MongodbBaseJob
      * z logami.
      */
     
+    @Override
     public String GetName()
     {
-        return "mongodb-schema";
+        return "schema";
     }   
     
     /*
      * Na obecnym poziomie żadne dodatkowe definicje nie są potrzebne.
      */
     
+    @Override
     public void PerformInsertOperation(int identifier)
     {        
     }   
@@ -34,6 +36,7 @@ public class MongodbSchemaJob extends MongodbBaseJob
      * do uruchomienia w innym wątku.
      */     
     
+    @Override
     public IDatabaseJob Clone()
     {
         return new MongodbSchemaJob();

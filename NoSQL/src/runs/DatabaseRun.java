@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.svenson.JSONParser;
 import tools.Configuration;
-import tools.StringTools;
 
 /**
  *
@@ -19,13 +18,14 @@ import tools.StringTools;
 
 public class DatabaseRun implements IDatabaseRun
 {
-    private String configContent;
-    private String content;
-    private HashMap configObject;
-    private IDataSource dataSource;
+    private String filename;
+    private String configContent;    
+    private HashMap configObject;    
     
     public DatabaseRun(String filename)
     {
+        this.filename = filename;
+        
         try
         {
             StringBuffer data = new StringBuffer();
@@ -108,40 +108,17 @@ public class DatabaseRun implements IDatabaseRun
     public int GetSelectDocumentCount() 
     {
         return ((Long)this.configObject.get("documents_per_select")).intValue();
-    }    
+    }     
     
     /*
-     * Metoda powinna zwrócic content jaki ma zostać zapisany w bazie danych
-     * podczas operacji insert wykonywanej przez zadanie w tym przebiegu.
-     * 
-     * W przyszłości należy rozwinąć tę metodę w podsystem DataSource który 
-     * pozwoli zdefiniować źródło pochodzenia danych.
-     */    
+     * Metoda zwraca nazwę przebiegu która jest uwzględniana w nazwie pliku
+     * z logiem wykonania zadania. Umożliwia tym samym dokładną identyfikację
+     * zadania i śledzenie jego wykonania.
+     */
     
     @Override
-    public String GetContent(int iter) throws FileNotFoundException, IOException
+    public String GetName()
     {
-        if(this.dataSource == null)
-        {
-            throw new IOException("Data source not defined");            
-        }
-        
-        if(content == null) 
-        { 
-            this.content = this.dataSource.GetData(iter);
-        }
-        
-        return String.format("Content %d: %s", iter, content);        
-    }    
-
-    /*
-     * Metoda pozwalająca na ustawienie źródła danych dla danego przebiegu.
-     * Źródło danych musi zostać zdefiniowane.
-     */    
-    
-    @Override
-    public void SetDataSource(IDataSource datasource) 
-    {
-        this.dataSource = datasource;
+        return this.filename.replaceAll(".json", "");
     }
 }

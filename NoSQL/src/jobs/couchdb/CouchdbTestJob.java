@@ -25,9 +25,10 @@ public class CouchdbTestJob extends CouchdbBaseJob
      * z logami.
      */
     
+    @Override
     public String GetName()
     {
-        return "couchdb-test";
+        return "test";
     }
     
     /*
@@ -37,6 +38,7 @@ public class CouchdbTestJob extends CouchdbBaseJob
     //http://127.0.0.1:5984/testdb/_design/queries/_view/odds
     //http://127.0.0.1:5984/testdb/_design/queries/_view/even?keys=[%2213%22,%2217%22]
     
+    @Override
     public int PerformSelectOperation(int identifier)
     {   
         int[] keysArray = this.GetDocumentListForIter(identifier);
@@ -57,6 +59,7 @@ public class CouchdbTestJob extends CouchdbBaseJob
      * Metoda definiująca operację wstawienie dokumentu do bazy danych.
      */    
     
+    @Override
     public void PerformInsertOperation(int identifier)
     {
         try 
@@ -66,12 +69,12 @@ public class CouchdbTestJob extends CouchdbBaseJob
             document.put("id", String.format("%d", identifier));
             document.put("threadid", String.format("%d", this.threadID));
             document.put("title", String.format("Title %d", identifier));        
-            document.put("content", this.test.GetContent(identifier));
+            document.put("content", this.dataSource.GetData(identifier));
             
             this.db.createDocument(document);
         } 
         
-        catch (IOException ex) 
+        catch (Exception ex) 
         {
             Logger.getLogger(CouchdbTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,6 +85,7 @@ public class CouchdbTestJob extends CouchdbBaseJob
      * do uruchomienia w innym wątku.
      */     
     
+    @Override
     public IDatabaseJob Clone()
     {
         return new CouchdbTestJob();

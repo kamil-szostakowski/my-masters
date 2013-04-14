@@ -10,7 +10,12 @@ import java.io.OutputStream;
 import nosql.DBTestRunner;
 
 /**
- *
+ * Żądania obsługiwane przez handler.
+ * 
+ * http://localhost:9090/db/couchdb/job/prepare/run/name
+ * http://localhost:9090/db/couchdb/job/schema/run/name
+ * http://localhost:9090/db/couchdb/job/test/run/name
+ * 
  * @author Kamil Szostakowski
  */
 public class CouchdbJobRequest extends BaseJobRequest implements HttpHandler
@@ -38,14 +43,25 @@ public class CouchdbJobRequest extends BaseJobRequest implements HttpHandler
         
         this.PrepareJob(); 
         this.PrepareRun();
+        this.PrepareDataSource();
         
         String response = "CouchdbPrepareRequest started...";
         
-        DBTestRunner testRunner = new DBTestRunner();
+        if(this.IsValid())
+        {        
+            DBTestRunner testRunner = new DBTestRunner();
         
-        testRunner.SetJob(this.job);
-        testRunner.SetTest(this.run);
-        testRunner.RunTest();          
+            testRunner.SetJobIdentifier(this.jobIdentifier);
+            testRunner.SetJob(this.job);
+            testRunner.SetTest(this.run);
+            testRunner.SetDataSource(this.dataSource);
+            testRunner.RunTest();                  
+        }
+        
+        else
+        {
+            response = this.GetValidationMessage();
+        }
         
         exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
         

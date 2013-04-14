@@ -20,9 +20,10 @@ public class CouchdbPrepareJob extends CouchdbTestJob
      * z logami.
      */
     
+    @Override
     public String GetName()
     {
-        return "mongodb-prepare";
+        return "prepare";
     }
     
     /*
@@ -30,6 +31,7 @@ public class CouchdbPrepareJob extends CouchdbTestJob
      * do uruchomienia w innym wątku.
      */
     
+    @Override
     public IDatabaseJob Clone()
     {
         return new CouchdbPrepareJob();

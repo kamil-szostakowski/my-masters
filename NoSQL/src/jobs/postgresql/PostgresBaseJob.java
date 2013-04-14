@@ -2,6 +2,7 @@ package jobs.postgresql;
 
 import basejobs.BaseJob;
 import basejobs.LogEntry;
+import data.source.IDataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -31,6 +32,8 @@ public abstract class PostgresBaseJob extends BaseJob
     private String url = (String) Configuration.GetParam("postgresql:url"); //"jdbc:postgresql://localhost/testdb";
     private String user = (String) Configuration.GetParam("postgresql:user"); //"postgres";
     private String password = (String) Configuration.GetParam("postgresql:password"); //"kamil123";     
+    
+    protected IDataSource dataSource;
     
     /*
      * Metoda próbuje połączyć się z użyciem hasła.
@@ -132,5 +135,25 @@ public abstract class PostgresBaseJob extends BaseJob
         {
             Logger.getLogger(PostgresTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }    
+    }  
+    
+    /*
+     * Metoda pozwala zdefiniować źródło danych dla zadania.
+     */
+    
+    @Override
+    public void SetDataSource(IDataSource dataSource)
+    {
+        this.dataSource = dataSource;
+    } 
+    
+    /*
+     * Metoda zwraca nazwę bazy danych do na której wykonywane będzie zadanie.
+     */
+    
+    @Override
+    public String GetDbName()
+    {
+        return "postgresql";
     }    
 }

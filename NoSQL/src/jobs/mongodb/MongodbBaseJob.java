@@ -5,9 +5,8 @@ import basejobs.LogEntry;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
+import data.source.IDataSource;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import tools.Configuration;
 
 /**
@@ -33,6 +32,8 @@ public abstract class MongodbBaseJob extends BaseJob
     private Long port = (Long) Configuration.GetParam("mongodb:port");
     private String dbname = (String) Configuration.GetParam("mongodb:dbname");
     private String collectionName = (String) Configuration.GetParam("mongodb:collection");
+    
+    protected IDataSource dataSource;
     
     /*
      * Metoda zestawiająca połaczenie z bazą danych MongoDB
@@ -92,5 +93,25 @@ public abstract class MongodbBaseJob extends BaseJob
     @Override
     public void Disconnect() 
     {        
+    }  
+    
+    /*
+     * Metoda pozwala zdefiniować źródło danych dla zadania.
+     */
+    
+    @Override
+    public void SetDataSource(IDataSource dataSource)
+    {
+        this.dataSource = dataSource;
+    }  
+    
+    /*
+     * Metoda zwraca nazwę bazy danych do na której wykonywane będzie zadanie.
+     */
+    
+    @Override
+    public String GetDbName()
+    {
+        return "mongodb";
     }    
 }

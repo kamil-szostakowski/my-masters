@@ -9,8 +9,13 @@ import jobs.postgresql.PostgresPrepareJob;
 import jobs.postgresql.PostgresSchemaJob;
 import jobs.postgresql.PostgresTestJob;
 
-/**
- *
+/** 
+ * Żądania obsługiwane przez handler.
+ * 
+ * http://localhost:9090/db/postgresql/job/prepare/run/name
+ * http://localhost:9090/db/postgresql/job/schema/run/name
+ * http://localhost:9090/db/postgresql/job/test/run/name
+ * 
  * @author Kamil Szostakowski
  */
 public class PostgresqlJobRequest extends BaseJobRequest implements HttpHandler
@@ -37,15 +42,26 @@ public class PostgresqlJobRequest extends BaseJobRequest implements HttpHandler
         this.ParseParameters(exchange.getRequestURI().toString());
         
         this.PrepareJob(); 
-        this.PrepareRun();         
+        this.PrepareRun(); 
+        this.PrepareDataSource();
         
         String response = "PostgresqlPrepareJob started...";
         
-        DBTestRunner testRunner = new DBTestRunner();
+        if(this.IsValid())
+        {
+            DBTestRunner testRunner = new DBTestRunner();
         
-        testRunner.SetJob(this.job);
-        testRunner.SetTest(this.run);
-        testRunner.RunTest();          
+            testRunner.SetJobIdentifier(this.jobIdentifier);
+            testRunner.SetJob(this.job);
+            testRunner.SetTest(this.run);
+            testRunner.SetDataSource(this.dataSource);
+            testRunner.RunTest();          
+        }
+        
+        else
+        {
+            response = this.GetValidationMessage();
+        }        
         
         exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
         

@@ -1,8 +1,7 @@
 package nosql;
 
 import basejobs.IDatabaseJob;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import data.source.IDataSource;
 import runs.IDatabaseRun;
 
 /**
@@ -11,9 +10,30 @@ import runs.IDatabaseRun;
  */
 public class DBTestRunner 
 {
-    private IDatabaseRun test;  
+    private IDatabaseRun run;  
     private IDatabaseJob job;
-    private Thread[] threads;
+    private IDataSource datasource;
+    private Thread[] threads;     
+    
+    private String jobIdentifier;
+    
+    /*
+     * Metoda pozwala na ustawienie identyfikatora zadania
+     */
+    
+    public void SetJobIdentifier(String id)
+    {
+        this.jobIdentifier = id;
+    }
+    
+    /*
+     * Metoda pozwala na ustawienie źródła danych dla zadania.
+     */
+    
+    public void SetDataSource(IDataSource source)
+    {
+        this.datasource = source;
+    }
     
     /*
      * Metoda pozwala na zdefiniowanie przebiegu dla zadania.
@@ -21,7 +41,7 @@ public class DBTestRunner
     
     public void SetTest(IDatabaseRun test)
     {
-        this.test = test;
+        this.run = test;
     }
     
     /*
@@ -39,19 +59,23 @@ public class DBTestRunner
     
     public void RunTest()
     {        
-        this.threads = new Thread[test.GetNumberOfThreads()];
+        this.threads = new Thread[run.GetNumberOfThreads()];                
         
-        for(int iter=0; iter<test.GetNumberOfThreads(); iter++)
-        {                                                    
-            this.threads[iter] = new Thread((Runnable)this.job);
+        for(int iter=0; iter<run.GetNumberOfThreads(); iter++)
+        {                                              
+            String dbName = this.job.GetDbName();
             
+            this.threads[iter] = new Thread((Runnable)this.job);
+                        
             this.job.SetThreadID(iter);            
-            this.job.SetLogFile(String.format("%s-thread-%d.log", this.job.GetName(), iter));
-            this.job.SetConfiguration(test);
+            this.job.SetJobIdentifier(this.jobIdentifier);
+            this.job.SetLogFile(String.format("Logs/%s/%s/thread-%d.log", dbName, this.jobIdentifier, iter));
+            this.job.SetConfiguration(this.run);
+            this.job.SetDataSource(this.datasource);
                 
             this.threads[iter].start();  
             
             this.job = this.job.Clone();
         }             
-    }
+    }    
 }

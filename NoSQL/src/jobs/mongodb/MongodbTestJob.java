@@ -22,15 +22,17 @@ public class MongodbTestJob extends MongodbBaseJob
      * z logami.
      */
     
+    @Override
     public String GetName()
     {
-        return "mongodb-test";
+        return "test";
     }   
     
     /*
      * Metoda definiująca operację pobrania dokumentu z bazy danych.
      */
     
+    @Override
     public int PerformSelectOperation(int identifier)
     {            
         BasicDBObject query = new BasicDBObject("id", new BasicDBObject("$in", this.GetDocumentListForIter(identifier)));
@@ -44,6 +46,7 @@ public class MongodbTestJob extends MongodbBaseJob
      * Metoda definiująca operację wstawienie dokumentu do bazy danych.
      */     
     
+    @Override
     public void PerformInsertOperation(int identifier)
     {
         try 
@@ -53,12 +56,12 @@ public class MongodbTestJob extends MongodbBaseJob
             document.append("id", identifier);
             document.append("threadid", this.threadID);
             document.append("title", String.format("Title %d", identifier));
-            document.append("content", test.GetContent(identifier));        
+            document.append("content", this.dataSource.GetData(identifier));        
             
             this.collection.insert(document);            
         } 
         
-        catch (IOException ex) 
+        catch (Exception ex) 
         {
             Logger.getLogger(MongodbTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,6 +72,7 @@ public class MongodbTestJob extends MongodbBaseJob
      * do uruchomienia w innym wątku.
      */     
     
+    @Override
     public IDatabaseJob Clone()
     {
         return new MongodbTestJob();

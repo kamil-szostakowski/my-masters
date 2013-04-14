@@ -24,15 +24,17 @@ public class PostgresSchemaJob extends PostgresBaseJob
      * z logami.
      */
     
+    @Override
     public String GetName()
     {
-        return "postgresql-schema";
+        return "schema";
     }      
     
     /*
      * Utworzenie tabeli na dokumenty.
      */    
     
+    @Override
     public void PerformInsertOperation(int identifier)   
     {
         try 
@@ -51,6 +53,7 @@ public class PostgresSchemaJob extends PostgresBaseJob
      * do uruchomienia w innym wątku.
      */    
     
+    @Override
     public IDatabaseJob Clone()
     {
         return new PostgresSchemaJob();

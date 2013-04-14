@@ -12,6 +12,7 @@ import http.handlers.CouchdbJobRequest;
 import http.handlers.InfoRequest;
 import http.handlers.MongodbJobRequest;
 import http.handlers.PostgresqlJobRequest;
+import java.io.File;
 import java.net.InetSocketAddress;
 
 /**
@@ -24,6 +25,10 @@ public class NoSQL
     
     private static HttpServer server;
     
+    /*
+     * Metoda inicjalizuje web serwis do komunikacji z aplikacją.
+     */
+    
     private static void InitializeHttpServer() throws IOException
     {
         server = HttpServer.create(new InetSocketAddress(9090), 0);
@@ -35,7 +40,39 @@ public class NoSQL
         
         server.setExecutor(null);
         server.start();
-    }    
+    }   
+    
+    /*
+     * Metoda inicjuje kontekst aplikacji.
+     * 
+     * - Tworzy katalog na logi.
+     */
+        
+    public static void InitializeApplicationContext()
+    {
+        File logDirectory = new File("Logs");
+        
+        if(!logDirectory.exists())
+        {
+            logDirectory.mkdir();
+        }
+        
+        String[] dbs = new String[3];
+        
+        dbs[0] = "couchdb";
+        dbs[1] = "mongodb";
+        dbs[2] = "postgresql";
+        
+        for(int iter=0; iter<dbs.length; iter++)
+        {
+            File dbDirectory = new File(String.format("Logs/%s", dbs[iter]));
+            
+            if(!dbDirectory.exists())
+            {
+                dbDirectory.mkdir();                
+            }
+        }
+    }
     
     /**
      * @param args the command line arguments
@@ -44,9 +81,10 @@ public class NoSQL
     public static void main(String[] args) 
     {      
         try 
-        {
+        {            
             Configuration.Prepare();
-            
+         
+            NoSQL.InitializeApplicationContext();
             NoSQL.InitializeHttpServer();                                                                                                      
         } 
         

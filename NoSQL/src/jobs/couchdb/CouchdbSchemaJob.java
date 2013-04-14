@@ -21,9 +21,10 @@ public class CouchdbSchemaJob extends CouchdbBaseJob
      * z logami.
      */
     
+    @Override
     public String GetName()
     {
-        return "couchdb-schema";
+        return "schema";
     }
     
     /*
@@ -38,6 +39,7 @@ public class CouchdbSchemaJob extends CouchdbBaseJob
      * nieparzystych identyfikatorach.
      */
     
+    @Override
     public void PerformInsertOperation(int identifier)
     {              
        Map<String, Object> viewAll = new HashMap<>(); viewAll.put("map", "function(doc) { emit(doc.id, null) }");
@@ -64,6 +66,7 @@ public class CouchdbSchemaJob extends CouchdbBaseJob
      * do uruchomienia w innym wątku.
      */    
     
+    @Override
     public IDatabaseJob Clone()
     {
         return new CouchdbSchemaJob();

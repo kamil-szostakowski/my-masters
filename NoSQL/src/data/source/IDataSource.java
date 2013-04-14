@@ -10,8 +10,18 @@ package data.source;
 public interface IDataSource 
 {
     /*
-     * Metoda zwraca dane pobrane ze źródła.     
+     * Metoda powinna zwrócic content jaki ma zostać zapisany w bazie danych
+     * podczas operacji insert wykonywanej przez zadanie w tym przebiegu.
+     * 
      */
     
-    String GetData(Object param);
+    String GetData(Object param) throws Exception;
+    
+    /*
+     * Metoda zwracająca nazwę źródła danych, informacja ta potrzebna jest 
+     * odpowiedniego nazwania pliku z logami dla zadania a tym samym do umożliwenia
+     * poprawnego monitoringu stanu zadań.
+     */
+    
+    String GetName();           
 }

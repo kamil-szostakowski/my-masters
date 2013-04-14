@@ -2,6 +2,7 @@ package jobs.couchdb;
 
 import basejobs.BaseJob;
 import basejobs.LogEntry;
+import data.source.IDataSource;
 import org.jcouchdb.db.Database;
 import tools.Configuration;
 
@@ -24,6 +25,8 @@ public abstract class CouchdbBaseJob extends BaseJob
     private String host = (String) Configuration.GetParam("couchdb:host");
     private String dbname = (String) Configuration.GetParam("couchdb:dbname");
     private Long port = (Long) Configuration.GetParam("couchdb:port");    
+    
+    protected IDataSource dataSource;
     
     /*
      * Metoda zestawiająca połaczenie z bazą danych CouchDB
@@ -53,5 +56,25 @@ public abstract class CouchdbBaseJob extends BaseJob
     @Override
     public void Disconnect() 
     {        
-    }    
+    }   
+    
+    /*
+     * Metoda pozwala zdefiniować źródło danych dla zadania.
+     */
+    
+    @Override
+    public void SetDataSource(IDataSource dataSource)
+    {
+        this.dataSource = dataSource;
+    }
+    
+    /*
+     * Metoda zwraca nazwę bazy danych do na której wykonywane będzie zadanie.
+     */
+    
+    @Override
+    public String GetDbName()
+    {
+        return "couchdb";
+    }
 }

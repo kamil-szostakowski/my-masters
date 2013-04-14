@@ -29,15 +29,17 @@ public class PostgresTestJob extends PostgresBaseJob
      * z logami.
      */
     
+    @Override
     public String GetName()
     {
-        return "postgresql-test";
+        return "test";
     }      
     
     /*
      * Metoda definiująca operację pobrania dokumentu z bazy danych.
      */    
     
+    @Override
     public int PerformSelectOperation(int identifier)
     {
         try
@@ -57,17 +59,18 @@ public class PostgresTestJob extends PostgresBaseJob
      * Metoda definiująca operację wstawienie dokumentu do bazy danych.
      */      
     
+    @Override
     public void PerformInsertOperation(int identifier)
     {
         try 
         {
             String title = String.format("Title %d", identifier);
-            String content = this.test.GetContent(identifier);        
+            String content = this.dataSource.GetData(identifier);        
             
             this.statement.execute(String.format(this.query, identifier, this.threadID, title, content));
         } 
         
-        catch (SQLException | IOException ex) 
+        catch (Exception ex) 
         {
             Logger.getLogger(PostgresTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -78,6 +81,7 @@ public class PostgresTestJob extends PostgresBaseJob
      * do uruchomienia w innym wątku.
      */      
     
+    @Override
     public IDatabaseJob Clone()
     {
         return new PostgresTestJob();

@@ -6,6 +6,7 @@ package basejobs;
 
 import jobs.couchdb.CouchdbTestJob;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import runs.IDatabaseRun;
-import tools.StringTools;
 
 /**
  * Metoda dostarcza podstwowych mechanizmów używanych podczas 
@@ -32,6 +32,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
 {
     protected int threadID;
     private String logFilename;
+    protected String jobIdentifier;
     protected IDatabaseRun test;
     
     private FileWriter fstream;
@@ -150,9 +151,30 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
      * Metoda definiujaca przebieg dla tego zadania.
      */
     
+    @Override
     public void SetConfiguration(IDatabaseRun config)
     {
         this.test = config;
+    }
+    
+    /*
+     * Metoda pozwalająca na zdefiniowanie identyfikatora, który będzie
+     * przyporządkowany do zadania.
+     */
+    
+    @Override
+    public void SetJobIdentifier(String identifier)
+    {
+        this.jobIdentifier = identifier;
+        
+        String path = String.format("Logs/%s/%s", this.GetDbName(), this.jobIdentifier);
+        
+        File jobLogDir = new File(path);
+        
+        if(!jobLogDir.exists())
+        {
+            jobLogDir.mkdir();
+        }
     }
     
     /*
@@ -160,9 +182,10 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
      * wykonujący to zadanie.
      */
     
+    @Override
     public void SetLogFile(String filename)
     {
-        this.logFilename = filename;
+        this.logFilename = filename;                                
     }
     
     /*
@@ -170,6 +193,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
      * to zadanie.
      */
     
+    @Override
     public void SetThreadID(int identifier)
     {
         this.threadID = identifier;
@@ -179,6 +203,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
      * Metoda uruchamiajaca wykonanie zadania.
      */
     
+    @Override
     public void RunTest() throws FileNotFoundException, IOException
     {
         System.out.println(String.format("Starting thread name: %s id: %d", this.getClass().toString(), this.threadID));                 
@@ -248,6 +273,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
      * zdefiniowanie własnego sposobu wykonania operacji select.
      */
     
+    @Override
     public int PerformSelectOperation(int identifier)
     {        
         return 0;
@@ -258,6 +284,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
      * zdefiniowanie własnego sposobu wykonania operacji insert.
      */    
     
+    @Override
     public void PerformInsertOperation(int identifier)
     {        
     }

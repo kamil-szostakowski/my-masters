@@ -26,7 +26,7 @@ public class FileDataSource implements IDataSource
      */
     
     @Override
-    public String GetData(Object param) 
+    public String GetData(Object param) throws Exception
     {
         if(this.staticContent == null)
         {
@@ -37,9 +37,23 @@ public class FileDataSource implements IDataSource
             catch (IOException ex) 
             {
                 Logger.getLogger(FileDataSource.class.getName()).log(Level.SEVERE, null, ex);
+                
+                throw new Exception(ex.getMessage());
             }
         }
         
         return this.staticContent;
-    }    
+    }  
+    
+    /*
+     * Metoda zwracająca nazwę źródła danych, informacja ta potrzebna jest 
+     * odpowiedniego nazwania pliku z logami dla zadania a tym samym do umożliwenia
+     * poprawnego monitoringu stanu zadań.
+     */
+    
+    @Override
+    public String GetName()
+    {
+        return "file";
+    }
 }
