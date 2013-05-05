@@ -38,9 +38,9 @@ public class InfoRequest implements HttpHandler
     {
         String[] params = uri.split("/");
         
-        for(int iter=2; iter<params.length; iter+=2)
+        for(int iter=1; iter<params.length; iter+=2)
         {                        
-            if(params[iter].equals("db")) { this.dbName = params[iter+1]; }
+            if(params[iter].equals("info")) { this.dbName = params[iter+1]; }
             if(params[iter].equals("id")) { this.jobIdentifier = params[iter+1]; }
         }
     } 
@@ -58,7 +58,7 @@ public class InfoRequest implements HttpHandler
             if(dir.exists())
             {                
                 File[] contents = dir.listFiles();                    
-            
+                
                 for(int iter=0; iter<contents.length; iter++)
                 {
                     String filename = contents[iter].getName();

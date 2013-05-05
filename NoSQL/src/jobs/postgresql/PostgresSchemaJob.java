@@ -17,18 +17,7 @@ import java.util.logging.Logger;
 
 public class PostgresSchemaJob extends PostgresBaseJob
 {
-    private String schema = "CREATE TABLE document(id integer NOT NULL, threadid integer, title character varying(200), content text)";
-    
-    /*
-     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
-     * z logami.
-     */
-    
-    @Override
-    public String GetName()
-    {
-        return "schema";
-    }      
+    private String schema = "CREATE TABLE document(id integer NOT NULL, threadid integer, title character varying(200), content text)";         
     
     /*
      * Utworzenie tabeli na dokumenty.

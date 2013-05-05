@@ -51,6 +51,7 @@ public class CouchdbJobRequest extends BaseJobRequest implements HttpHandler
         {        
             DBTestRunner testRunner = new DBTestRunner();
         
+            testRunner.SetDatabase(this.dbName);
             testRunner.SetJobIdentifier(this.jobIdentifier);
             testRunner.SetJob(this.job);
             testRunner.SetTest(this.run);

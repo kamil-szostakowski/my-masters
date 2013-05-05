@@ -66,15 +66,5 @@ public abstract class CouchdbBaseJob extends BaseJob
     public void SetDataSource(IDataSource dataSource)
     {
         this.dataSource = dataSource;
-    }
-    
-    /*
-     * Metoda zwraca nazwę bazy danych do na której wykonywane będzie zadanie.
-     */
-    
-    @Override
-    public String GetDbName()
-    {
-        return "couchdb";
-    }
+    }    
 }

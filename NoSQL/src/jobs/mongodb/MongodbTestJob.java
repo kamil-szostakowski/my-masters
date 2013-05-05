@@ -3,7 +3,6 @@ package jobs.mongodb;
 import basejobs.IDatabaseJob;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,18 +15,7 @@ import java.util.logging.Logger;
  */
 
 public class MongodbTestJob extends MongodbBaseJob
-{      
-    /*
-     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
-     * z logami.
-     */
-    
-    @Override
-    public String GetName()
-    {
-        return "test";
-    }   
-    
+{           
     /*
      * Metoda definiująca operację pobrania dokumentu z bazy danych.
      */

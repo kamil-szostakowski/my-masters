@@ -22,18 +22,7 @@ public class PostgresTestJob extends PostgresBaseJob
     //private String password = "x11y85aa";       
     
     private String query = "INSERT INTO document (id, threadid, title, content) VALUES(%d, %d, '%s', '%s')";    
-    private String select = "SELECT * FROM document where id IN (%s)";           
-    
-    /*
-     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
-     * z logami.
-     */
-    
-    @Override
-    public String GetName()
-    {
-        return "test";
-    }      
+    private String select = "SELECT * FROM document where id IN (%s)";                   
     
     /*
      * Metoda definiująca operację pobrania dokumentu z bazy danych.

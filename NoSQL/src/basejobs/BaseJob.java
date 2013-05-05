@@ -166,15 +166,6 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
     public void SetJobIdentifier(String identifier)
     {
         this.jobIdentifier = identifier;
-        
-        String path = String.format("Logs/%s/%s", this.GetDbName(), this.jobIdentifier);
-        
-        File jobLogDir = new File(path);
-        
-        if(!jobLogDir.exists())
-        {
-            jobLogDir.mkdir();
-        }
     }
     
     /*
@@ -185,7 +176,18 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
     @Override
     public void SetLogFile(String filename)
     {
-        this.logFilename = filename;                                
+        this.logFilename = filename;          
+        
+        String[] dirs = filename.split("/");        
+        
+        String path = String.format("Logs/%s/%s", dirs[1], this.jobIdentifier);
+        
+        File jobLogDir = new File(path);
+        
+        if(!jobLogDir.exists())
+        {
+            jobLogDir.mkdir();
+        }        
     }
     
     /*

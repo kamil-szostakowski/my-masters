@@ -1,9 +1,5 @@
 package runs;
 
-import data.source.IDataSource;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 /**
  * Interfejs pozwalający na zdefiniowanie przebiegu zadania
  * wykonywanego na bazie danych.
@@ -58,5 +54,5 @@ public interface IDatabaseRun
      * zadania i śledzenie jego wykonania.
      */
     
-    public String GetName();
+        public String GetName();
 }

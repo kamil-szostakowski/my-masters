@@ -16,6 +16,7 @@ public class DBTestRunner
     private Thread[] threads;     
     
     private String jobIdentifier;
+    private String dbName;
     
     /*
      * Metoda pozwala na ustawienie identyfikatora zadania
@@ -54,6 +55,15 @@ public class DBTestRunner
     }
     
     /*
+     * Metoda ustawia nazwę bazy danych na ktorej będzie wykonywane zadanie.
+     */
+    
+    public void SetDatabase(String dbname)
+    {
+        this.dbName = dbname;
+    }
+    
+    /*
      * Metoda uruchamia zadanie w bazie.
      */
     
@@ -62,14 +72,12 @@ public class DBTestRunner
         this.threads = new Thread[run.GetNumberOfThreads()];                
         
         for(int iter=0; iter<run.GetNumberOfThreads(); iter++)
-        {                                              
-            String dbName = this.job.GetDbName();
-            
+        {                                                                      
             this.threads[iter] = new Thread((Runnable)this.job);
                         
             this.job.SetThreadID(iter);            
             this.job.SetJobIdentifier(this.jobIdentifier);
-            this.job.SetLogFile(String.format("Logs/%s/%s/thread-%d.log", dbName, this.jobIdentifier, iter));
+            this.job.SetLogFile(String.format("Logs/%s/%s/thread-%d.log", this.dbName, this.jobIdentifier, iter));
             this.job.SetConfiguration(this.run);
             this.job.SetDataSource(this.datasource);
                 

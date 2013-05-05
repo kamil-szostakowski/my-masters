@@ -15,18 +15,7 @@ import java.util.Map;
  */
 
 public class CouchdbSchemaJob extends CouchdbBaseJob
-{
-    /*
-     * Metoda zwraca nazwę zadania, używana między innymi to tworzenia nazw plików
-     * z logami.
-     */
-    
-    @Override
-    public String GetName()
-    {
-        return "schema";
-    }
-    
+{   
     /*
      * Metoda definiujące sposób wykonania metody insert dla tego zadania.
      * 
