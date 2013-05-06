@@ -38,6 +38,26 @@ public class PostgresSchemaJob extends PostgresBaseJob
     }
     
     /*
+     * Metoda definiująca jak ma wyglądać operacja update 
+     * dla danego zadania.
+     */      
+    
+    @Override
+    public void PerformUpdateOperation(int identifier) 
+    {    
+    }
+
+    /*
+     * Metoda definiująca jak ma wyglądać operacja delete 
+     * dla danego zadania.
+     */    
+    
+    @Override
+    public void PerformDeleteOperation(int identifier) 
+    {    
+    }    
+    
+    /*
      * Metoda pozwalająca stworzyć instancję tego zadania 
      * do uruchomienia w innym wątku.
      */    

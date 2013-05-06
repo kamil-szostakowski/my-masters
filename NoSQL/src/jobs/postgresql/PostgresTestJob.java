@@ -1,7 +1,6 @@
 package jobs.postgresql;
 
 import basejobs.IDatabaseJob;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,6 +63,26 @@ public class PostgresTestJob extends PostgresBaseJob
             Logger.getLogger(PostgresTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /*
+     * Metoda definiująca jak ma wyglądać operacja update 
+     * dla danego zadania.
+     */      
+    
+    @Override
+    public void PerformUpdateOperation(int identifier) 
+    {    
+    }
+
+    /*
+     * Metoda definiująca jak ma wyglądać operacja delete 
+     * dla danego zadania.
+     */    
+    
+    @Override
+    public void PerformDeleteOperation(int identifier) 
+    {    
+    }    
     
     /*
      * Metoda pozwalająca stworzyć instancję tego zadania 

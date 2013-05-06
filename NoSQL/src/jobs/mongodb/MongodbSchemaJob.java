@@ -18,7 +18,27 @@ public class MongodbSchemaJob extends MongodbBaseJob
     @Override
     public void PerformInsertOperation(int identifier)
     {        
-    }   
+    } 
+    
+    /*
+     * Metoda definiująca jak ma wyglądać operacja update 
+     * dla danego zadania.
+     */      
+    
+    @Override
+    public void PerformUpdateOperation(int identifier) 
+    {    
+    }
+
+    /*
+     * Metoda definiująca jak ma wyglądać operacja delete 
+     * dla danego zadania.
+     */    
+    
+    @Override
+    public void PerformDeleteOperation(int identifier) 
+    {    
+    }    
     
     /*
      * Metoda pozwalająca stworzyć instancję tego zadania 

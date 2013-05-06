@@ -18,6 +18,7 @@ import tools.Configuration;
  * 
  * @author Kamil Szostakowski
  */
+
 public abstract class CouchdbBaseJob extends BaseJob
 {     
     protected Database db;     

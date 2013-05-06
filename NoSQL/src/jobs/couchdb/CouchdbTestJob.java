@@ -1,7 +1,6 @@
 package jobs.couchdb;
 
 import basejobs.IDatabaseJob;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -12,7 +11,7 @@ import tools.StringTools;
 
 /**
  * Właściwe zadanie testowe dla bazy CouchDB mierzącej jej wydajność
- * podczas wykonywania operacji select/insert w proporcjach zdefiniowanych
+ * podczas wykonywania operacji select/insert/update/delete w proporcjach zdefiniowanych
  * przez przebieg przypisany tenu zadaniu.
  * 
  * @author Kamil Szostakowski
@@ -68,6 +67,26 @@ public class CouchdbTestJob extends CouchdbBaseJob
             Logger.getLogger(CouchdbTestJob.class.getName()).log(Level.SEVERE, null, ex);
         }
     }  
+    
+    /*
+     * Metoda definiująca jak ma wyglądać operacja update 
+     * dla danego zadania.
+     */      
+    
+    @Override
+    public void PerformUpdateOperation(int identifier) 
+    {    
+    }
+
+    /*
+     * Metoda definiująca jak ma wyglądać operacja delete 
+     * dla danego zadania.
+     */    
+    
+    @Override
+    public void PerformDeleteOperation(int identifier) 
+    {    
+    }    
     
     /*
      * Metoda pozwalająca stworzyć instancję tego zadania 

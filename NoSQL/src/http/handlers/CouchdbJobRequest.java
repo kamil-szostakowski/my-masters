@@ -41,9 +41,9 @@ public class CouchdbJobRequest extends BaseJobRequest implements HttpHandler
     {
         this.ParseParameters(exchange.getRequestURI().toString());
         
-        this.PrepareJob(); 
-        this.PrepareRun();
-        this.PrepareDataSource();
+        this.PrepareJob();  // Parsowanie parametrów requestu
+        this.PrepareRun(); // Utworzenie przebiegu
+        this.PrepareDataSource(); // Utworzenie źródła danych
         
         String response = "CouchdbPrepareRequest started...";
         

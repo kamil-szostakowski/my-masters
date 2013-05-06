@@ -31,6 +31,26 @@ public class MongodbTestJob extends MongodbBaseJob
     }
     
     /*
+     * Metoda definiująca jak ma wyglądać operacja update 
+     * dla danego zadania.
+     */      
+    
+    @Override
+    public void PerformUpdateOperation(int identifier) 
+    {    
+    }
+
+    /*
+     * Metoda definiująca jak ma wyglądać operacja delete 
+     * dla danego zadania.
+     */    
+    
+    @Override
+    public void PerformDeleteOperation(int identifier) 
+    {    
+    }    
+    
+    /*
      * Metoda definiująca operację wstawienie dokumentu do bazy danych.
      */     
     

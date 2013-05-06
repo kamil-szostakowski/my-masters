@@ -90,6 +90,20 @@ public interface IDatabaseJob
     public void PerformInsertOperation(int identifier);   
     
     /*
+     * Metoda definiująca jak ma wyglądać operacja update 
+     * dla danego zadania.
+     */     
+    
+    public void PerformUpdateOperation(int identifier);
+    
+    /*
+     * Metoda definiująca jak ma wyglądać operacja delete 
+     * dla danego zadania.
+     */     
+    
+    public void PerformDeleteOperation(int identifier);
+    
+    /*
      * Metoda pozwala skolonować instancję zadania w celu przekazania
      * jej do wykonania w osobnym wątku.
      */
