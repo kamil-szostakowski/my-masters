@@ -31,7 +31,9 @@ public class NoSQL
     
     private static void InitializeHttpServer() throws IOException
     {
-        server = HttpServer.create(new InetSocketAddress(9090), 0);
+        Long port = (Long) Configuration.GetParam("main:port");
+                
+        server = HttpServer.create(new InetSocketAddress(port.intValue()), 0);
 
         server.createContext("/info", new InfoRequest());
         server.createContext("/db/couchdb", new CouchdbJobRequest());

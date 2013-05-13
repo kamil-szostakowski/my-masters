@@ -2,9 +2,9 @@ package http.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import jobs.couchdb.CouchdbPrepareJob;
-import jobs.couchdb.CouchdbSchemaJob;
-import jobs.couchdb.CouchdbTestJob;
+import jobs.mongodb.MongodbPrepareJob;
+import jobs.mongodb.MongodbSchemaJob;
+import jobs.mongodb.MongodbTestJob;
 import java.io.IOException;
 import java.io.OutputStream;
 import nosql.DBTestRunner;
@@ -28,9 +28,9 @@ public class MongodbJobRequest extends BaseJobRequest implements HttpHandler
     @Override
     protected void PrepareJob()
     {
-        if(super.jobName.equals("prepare")) { this.job = new CouchdbPrepareJob(); }
-        if(super.jobName.equals("schema")) { this.job = new CouchdbSchemaJob(); }
-        if(super.jobName.equals("test")) { this.job = new CouchdbTestJob(); }                
+        if(super.jobName.equals("prepare")) { this.job = new MongodbPrepareJob(); }
+        if(super.jobName.equals("schema")) { this.job = new MongodbSchemaJob(); }
+        if(super.jobName.equals("test")) { this.job = new MongodbTestJob(); }                
     }    
     
     /*
