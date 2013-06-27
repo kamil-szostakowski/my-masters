@@ -12,6 +12,13 @@
         "user": "",
         "password": ""
     },
+            
+    "couchdb-cluster": {
+    
+        "host": "127.0.0.1",
+        "port": 5984,
+        "dbname": "metadata"     
+    },
     
     "mongodb": {
         

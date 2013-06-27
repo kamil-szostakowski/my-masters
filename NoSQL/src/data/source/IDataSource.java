@@ -15,7 +15,7 @@ public interface IDataSource
      * 
      */
     
-    String GetData(Object param) throws Exception;
+    Object GetData(Object param) throws Exception;
     
     /*
      * Metoda zwracająca nazwę źródła danych, informacja ta potrzebna jest 

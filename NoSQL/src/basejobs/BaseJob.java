@@ -40,7 +40,7 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
     
     private long testStart;    
     
-    private Random randomizer;  
+    protected Random randomizer;  
     
     /*
      * Metoda inicjuje podsystemy wykorzystywane przez wszystkie zadania

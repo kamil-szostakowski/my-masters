@@ -26,7 +26,7 @@ public class FileDataSource implements IDataSource
      */
     
     @Override
-    public String GetData(Object param) throws Exception
+    public Object GetData(Object param) throws Exception
     {
         if(this.staticContent == null)
         {

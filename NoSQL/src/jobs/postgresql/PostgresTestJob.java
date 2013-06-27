@@ -53,7 +53,7 @@ public class PostgresTestJob extends PostgresBaseJob
         try 
         {
             String title = String.format("Title %d", identifier);
-            String content = this.dataSource.GetData(identifier);        
+            String content = (String) this.dataSource.GetData(identifier);        
             
             this.statement.execute(String.format(this.query, identifier, this.threadID, title, content));
         } 

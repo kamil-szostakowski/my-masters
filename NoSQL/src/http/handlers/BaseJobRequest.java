@@ -3,6 +3,7 @@ package http.handlers;
 import basejobs.IDatabaseJob;
 import data.source.FileDataSource;
 import data.source.IDataSource;
+import data.source.XmlDataSource;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,15 @@ public class BaseJobRequest
     
     protected void PrepareDataSource()
     {
-        this.dataSource = new FileDataSource("input2.txt");
+        if(this.dataSourceName.equals("xml-street")) 
+        { 
+            this.dataSource = new XmlDataSource(); 
+        }
+        
+        else 
+        { 
+            this.dataSource = new FileDataSource("input2.txt"); 
+        }
     }
     
     /*

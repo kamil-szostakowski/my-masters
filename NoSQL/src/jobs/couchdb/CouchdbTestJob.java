@@ -57,7 +57,7 @@ public class CouchdbTestJob extends CouchdbBaseJob
             document.put("id", String.format("%d", identifier));
             document.put("threadid", String.format("%d", this.threadID));
             document.put("title", String.format("Title %d", identifier));        
-            document.put("content", this.dataSource.GetData(identifier));
+            document.put("content", (String) this.dataSource.GetData(identifier));
             
             this.db.createDocument(document);
         } 
