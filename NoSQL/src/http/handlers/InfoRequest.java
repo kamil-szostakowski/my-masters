@@ -27,7 +27,7 @@ public class InfoRequest implements HttpHandler
     
     public InfoRequest()
     {
-        this.files = new LinkedList<>();
+        this.files = new LinkedList<String>();
     }
     
     /*
@@ -104,10 +104,10 @@ public class InfoRequest implements HttpHandler
         
         he.sendResponseHeaders(200, response.getBytes("UTF-8").length);        
         
-        try (OutputStream os = he.getResponseBody()) 
-        {            
-            os.write(response.getBytes());
-        }         
+        OutputStream os = he.getResponseBody();
+        
+        os.write(response.getBytes());
+        os.close();                
         
         this.files.clear();
     }    

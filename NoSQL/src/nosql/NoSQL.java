@@ -32,7 +32,7 @@ public class NoSQL
     private static void InitializeHttpServer() throws IOException
     {
         Long port = (Long) Configuration.GetParam("main:port");
-                
+              
         server = HttpServer.create(new InetSocketAddress(port.intValue()), 0);
 
         server.createContext("/info", new InfoRequest());

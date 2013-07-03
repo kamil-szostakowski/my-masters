@@ -31,17 +31,17 @@ public class CouchdbSchemaJob extends CouchdbBaseJob
     @Override
     public void PerformInsertOperation(int identifier)
     {              
-       Map<String, Object> viewAll = new HashMap<>(); viewAll.put("map", "function(doc) { emit(doc.id, null) }");
-       Map<String, Object> viewOdds = new HashMap<>(); viewOdds.put("map", "function(doc) { if (doc.id % 2 == 0)  emit(doc.id, null) }");
-       Map<String, Object> viewEven = new HashMap<>(); viewEven.put("map", "function(doc) { if (doc.id % 2  == 1)  emit(doc.id, null) }");
+       Map<String, Object> viewAll = new HashMap<String, Object>(); viewAll.put("map", "function(doc) { emit(doc.id, null) }");
+       Map<String, Object> viewOdds = new HashMap<String, Object>(); viewOdds.put("map", "function(doc) { if (doc.id % 2 == 0)  emit(doc.id, null) }");
+       Map<String, Object> viewEven = new HashMap<String, Object>(); viewEven.put("map", "function(doc) { if (doc.id % 2  == 1)  emit(doc.id, null) }");
        
-       Map<String, Object> views = new HashMap<>();
+       Map<String, Object> views = new HashMap<String, Object>();
        
        views.put("all", viewAll);
        views.put("odds", viewOdds);
        views.put("even", viewEven);
        
-       Map<String, Object> document = new HashMap<>();
+       Map<String, Object> document = new HashMap<String, Object>();
         
        document.put("_id", "_design/queries");
        document.put("language", "javascript");        

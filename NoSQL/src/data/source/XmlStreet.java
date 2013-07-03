@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package data.source;
 
 import java.util.HashMap;
@@ -15,30 +11,30 @@ import java.util.HashMap;
 
 public class XmlStreet 
 {
-    private String woj;
-    private String pow;
-    private String gmi;
-    private String rodz_gmi;
-    private String sym;
-    private String sym_ul;
-    private String cecha;
-    private String nazwa_1;
-    private String nazwa_2;
-    private String stan_na;
+    private String woj = "empty";
+    private String pow = "empty";
+    private String gmi = "empty";
+    private String rodz_gmi = "empty";
+    private String sym = "empty";
+    private String sym_ul = "empty";
+    private String cecha = "empty";
+    private String nazwa_1 = "empty";
+    private String nazwa_2 = "empty";
+    private String stan_na = "empty";
     
     public XmlStreet(HashMap<String, String> params)
-    {
+    {                       
         if(params.containsKey("WOJ")){ this.woj = params.get("WOJ"); }
-        else if(params.containsKey("POW")){ this.woj = params.get("POW"); }
-        else if(params.containsKey("GMI")){ this.woj = params.get("GMI"); }
-        else if(params.containsKey("RODZ_GMI")){ this.woj = params.get("RODZ_GMI"); }
-        else if(params.containsKey("SYM")){ this.woj = params.get("SYM"); }
+        if(params.containsKey("POW")){ this.pow = params.get("POW"); }
+        if(params.containsKey("GMI")){ this.gmi = params.get("GMI"); }
+        if(params.containsKey("RODZ_GMI")){ this.rodz_gmi = params.get("RODZ_GMI"); }
+        if(params.containsKey("SYM")){ this.sym = params.get("SYM"); }
         
-        else if(params.containsKey("SYM_UL")){ this.woj = params.get("SYM_UL"); }
-        else if(params.containsKey("CECHA")){ this.woj = params.get("CECHA"); }
-        else if(params.containsKey("NAZWA_1")){ this.woj = params.get("NAZWA_1"); }
-        else if(params.containsKey("NAZWA_2")){ this.woj = params.get("NAZWA_2"); }
-        else if(params.containsKey("STAN_NA")){ this.woj = params.get("STAN_NA"); }
+        if(params.containsKey("SYM_UL")){ this.sym_ul = params.get("SYM_UL"); }
+        if(params.containsKey("CECHA")){ this.cecha = params.get("CECHA"); }
+        if(params.containsKey("NAZWA_1")){ this.nazwa_1 = params.get("NAZWA_1"); }
+        if(params.containsKey("NAZWA_2")){ this.nazwa_2 = params.get("NAZWA_2"); }
+        if(params.containsKey("STAN_NA")){ this.stan_na = params.get("STAN_NA"); }        
     }
     
     public String GetWoj() { return this.woj; }

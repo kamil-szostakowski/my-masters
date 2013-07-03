@@ -35,7 +35,7 @@ public class BaseJobRequest
     
     public BaseJobRequest()
     {
-        this.validationErrors = new ArrayList<>();
+        this.validationErrors = new ArrayList<String>();
     }
     
     /*
@@ -61,16 +61,16 @@ public class BaseJobRequest
      */
     
     protected void PrepareDataSource()
-    {
+    {                        
         if(this.dataSourceName.equals("xml-street")) 
-        { 
+        {            
             this.dataSource = new XmlDataSource(); 
         }
         
         else 
-        { 
+        {             
             this.dataSource = new FileDataSource("input2.txt"); 
-        }
+        }        
     }
     
     /*

@@ -41,12 +41,13 @@ public class CouchdbJobRequest extends BaseJobRequest implements HttpHandler
     @Override
     public void handle(HttpExchange exchange) throws IOException 
     {
+        System.out.println("Couchdb job handled");
         this.ParseParameters(exchange.getRequestURI().toString());
         
-        this.PrepareJob();  // Parsowanie parametrów requestu
-        this.PrepareRun(); // Utworzenie przebiegu
+        this.PrepareJob();  // Parsowanie parametrów requestu        
+        this.PrepareRun(); // Utworzenie przebiegu        
         this.PrepareDataSource(); // Utworzenie źródła danych
-        
+        System.out.println("Couchdb job prepared");
         String response = "CouchdbPrepareRequest started...";
         
         if(this.IsValid())
@@ -58,19 +59,22 @@ public class CouchdbJobRequest extends BaseJobRequest implements HttpHandler
             testRunner.SetJob(this.job);
             testRunner.SetTest(this.run);
             testRunner.SetDataSource(this.dataSource);
-            testRunner.RunTest();                  
+            testRunner.RunTest();    
+            
+            System.out.println("Couchdb job run");
         }
         
         else
         {
+            System.out.println("Couchdb job error");
             response = this.GetValidationMessage();
         }
         
         exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
         
-        try (OutputStream os = exchange.getResponseBody()) 
-        {
-            os.write(response.getBytes());
-        }     
+        OutputStream os = exchange.getResponseBody();
+        
+        os.write(response.getBytes());
+        os.close();    
     }   
 }

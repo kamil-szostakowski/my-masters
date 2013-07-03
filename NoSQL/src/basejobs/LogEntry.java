@@ -1,8 +1,6 @@
 package basejobs;
 
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,9 +19,8 @@ public class LogEntry implements ILogEntry
     private Map<String, String> parameters;
     
     public LogEntry()
-    {
-        
-        this.parameters = new Hashtable<>();
+    {        
+        this.parameters = new HashMap<String, String>();
     }
     
     /*
@@ -63,6 +60,7 @@ public class LogEntry implements ILogEntry
      * Metoda zwracająca tekstową reprezentację loga.
      */
     
+    @Override
     public String toString()
     {
         String params = "";

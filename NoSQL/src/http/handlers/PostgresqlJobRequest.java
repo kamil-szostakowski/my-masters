@@ -66,9 +66,9 @@ public class PostgresqlJobRequest extends BaseJobRequest implements HttpHandler
         
         exchange.sendResponseHeaders(200, response.getBytes("UTF-8").length);
         
-        try (OutputStream os = exchange.getResponseBody()) 
-        {
-            os.write(response.getBytes());
-        }     
+        OutputStream os = exchange.getResponseBody();
+        
+        os.write(response.getBytes());
+        os.close();   
     }     
 }

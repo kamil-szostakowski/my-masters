@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package jobs.couchdb.street;
 
 import basejobs.IDatabaseJob;
@@ -13,6 +9,8 @@ import java.util.logging.Logger;
 
 /**
  *
+ * 127.0.0.1:9080/db/couchdb/job/cluster-feed/run/prepare/datasource/xml-street/id/feed-cluster-1
+ * 
  * @author kamil
  */
 public class CouchdbClusterFeed extends CouchdbClusterBaseJob
@@ -27,7 +25,7 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
     
     @Override
     public void PerformInsertOperation(int identifier)
-    {
+    {        
         try 
         {
             //int connectioNodeIndex = this.randomizer.nextInt(3);
@@ -35,7 +33,7 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
             
             XmlStreet street = (XmlStreet) this.dataSource.GetData(0);
             
-            Map<String, String> document = new HashMap<>();
+            Map<String, String> document = new HashMap<String, String>();
             
             document.put("id", String.format("%d", identifier));
             document.put("threadid", String.format("%d", this.threadID));

@@ -15,8 +15,8 @@ public class CouchdbShard
     
     public CouchdbShard(String name)
     {
-        this.connections = new LinkedList<>();
-        this.credentials = new LinkedList<>();
+        this.connections = new LinkedList<Database>();
+        this.credentials = new LinkedList<CouchdbCredentials>();
         
         this.shardName = name;
     }

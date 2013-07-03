@@ -27,11 +27,11 @@ public class XmlDataSource implements IDataSource
     private String currentField;      
     
     public XmlDataSource()
-    {
+    {        
         try 
         {
-            this.streets = new LinkedList<>();
-            this.currentRow = new HashMap<>();
+            this.streets = new LinkedList<XmlStreet>();
+            this.currentRow = new HashMap<String, String>();
             
             SAXParserFactory factory = SAXParserFactory.newInstance();        
             SAXParser saxParser = factory.newSAXParser();        
@@ -76,7 +76,7 @@ public class XmlDataSource implements IDataSource
                         {
                             String fieldName = currentField;
                             String fieldVal = new String(ch, start, length);
-                                             
+                            
                             currentRow.put(fieldName, fieldVal);
                         }
                     }
@@ -88,16 +88,32 @@ public class XmlDataSource implements IDataSource
             System.out.println(String.format("FINISHED %d", this.streets.size()));
         } 
         
-        catch (ParserConfigurationException | IOException | SAXException ex ) 
+        catch (ParserConfigurationException ex) 
         {
             Logger.getLogger(XmlDataSource.class.getName()).log(Level.SEVERE, null, ex);
+            
+            System.err.println(ex.toString());
         }
+        
+        catch(IOException ex)
+        {
+            Logger.getLogger(XmlDataSource.class.getName()).log(Level.SEVERE, null, ex);
+            
+            System.err.println(ex.toString());
+        }   
+        
+        catch(SAXException ex)
+        {
+            Logger.getLogger(XmlDataSource.class.getName()).log(Level.SEVERE, null, ex);
+            
+            System.err.println(ex.toString());
+        }         
     }
     
     @Override
     public Object GetData(Object param) throws Exception 
     {
-        int requestedIndex = (int)param;        
+        int requestedIndex = (Integer)param;        
         int dataIndex = requestedIndex % this.streets.size();
         
         return this.streets.get(dataIndex);

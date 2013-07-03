@@ -36,7 +36,7 @@ public abstract class CouchdbClusterBaseJob extends BaseJob
     {
         super();
         
-        this.shards = new HashMap<>();
+        this.shards = new HashMap<String, CouchdbShard>();
     }
     
     /*

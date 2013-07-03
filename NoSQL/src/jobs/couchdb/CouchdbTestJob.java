@@ -32,7 +32,7 @@ public class CouchdbTestJob extends CouchdbBaseJob
         int[] keysArray = this.GetDocumentListForIter(identifier);
         String keysString = StringTools.Join(keysArray, ",", true);
         
-        Map<String, Object> query = new HashMap<>();
+        Map<String, Object> query = new HashMap<String, Object>();
         
         query.put ("keys", String.format("[%s]", keysString));        
         
@@ -52,7 +52,7 @@ public class CouchdbTestJob extends CouchdbBaseJob
     {
         try 
         {
-            Map<String, String> document = new HashMap<>();
+            Map<String, String> document = new HashMap<String, String>();
         
             document.put("id", String.format("%d", identifier));
             document.put("threadid", String.format("%d", this.threadID));
