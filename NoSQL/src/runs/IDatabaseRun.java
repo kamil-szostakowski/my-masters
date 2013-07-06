@@ -27,6 +27,20 @@ public interface IDatabaseRun
     
     public int GetInsertRate();
     
+    /**
+     * Metoda umozliwia zdefiniowanie procentowy udział operacji update
+     * we wszystkich operacjach wykonywanych przez zadanie na bazie danych.
+     */     
+    
+    public int GetUpdateRate();
+    
+    /**
+     * Metoda umozliwia zdefiniowanie procentowy udział operacji delete
+     * we wszystkich operacjach wykonywanych przez zadanie na bazie danych.
+     */     
+    
+    public int GetDeleteRate();
+    
     /*
      * Metoda pozwalajaca na zdefiniowanie na ilu wątkach ma zostać
      * wykonane zdanie.

@@ -19,14 +19,14 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author kamil
  */
 
-public class XmlDataSource implements IDataSource
+public class XmlStreetsDataSource implements IDataSource
 {
     private LinkedList<XmlStreet> streets;
     private HashMap<String, String> currentRow;
     
-    private String currentField;      
+    private String currentField;
     
-    public XmlDataSource()
+    public XmlStreetsDataSource()
     {        
         try 
         {
@@ -71,13 +71,13 @@ public class XmlDataSource implements IDataSource
                 public void characters(char ch[], int start, int length) throws SAXException 
                 {
                     if(this.colName)
-                    {
+                    {                        
                         if(!currentRow.containsKey(currentField))
                         {
                             String fieldName = currentField;
                             String fieldVal = new String(ch, start, length);
                             
-                            currentRow.put(fieldName, fieldVal);
+                            currentRow.put(fieldName, fieldVal);                            
                         }
                     }
                 }
@@ -90,21 +90,21 @@ public class XmlDataSource implements IDataSource
         
         catch (ParserConfigurationException ex) 
         {
-            Logger.getLogger(XmlDataSource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(XmlStreetsDataSource.class.getName()).log(Level.SEVERE, null, ex);
             
             System.err.println(ex.toString());
         }
         
         catch(IOException ex)
         {
-            Logger.getLogger(XmlDataSource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(XmlStreetsDataSource.class.getName()).log(Level.SEVERE, null, ex);
             
             System.err.println(ex.toString());
         }   
         
         catch(SAXException ex)
         {
-            Logger.getLogger(XmlDataSource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(XmlStreetsDataSource.class.getName()).log(Level.SEVERE, null, ex);
             
             System.err.println(ex.toString());
         }         

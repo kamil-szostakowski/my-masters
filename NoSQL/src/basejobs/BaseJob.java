@@ -223,6 +223,10 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
             entry.SetThreadId(this.threadID);        
         
             this.WriteLog(entry);
+            
+            int insertRate = this.test.GetInsertRate();
+            int updateRate = this.test.GetUpdateRate();
+            int deleteRate = this.test.GetDeleteRate();            
         
             for(int iter=0; iter<test.GetRepeatCount(); iter++)
             {            
@@ -232,13 +236,27 @@ public abstract class BaseJob implements Runnable, IDatabaseJob
             
                 int rand = Math.abs(this.randomizer.nextInt(100));
             
-                if(rand < this.test.GetInsertRate())
+                if(rand < insertRate)
                 {
                     this.PerformInsertOperation(iter);
                     operationType = "insert";
                     extra = "";
                 }
+                
+                else if(rand < insertRate+updateRate)
+                {
+                    this.PerformUpdateOperation(iter);
+                    operationType = "update";
+                    extra = "";
+                }
             
+                else if(rand < insertRate+updateRate+deleteRate)
+                {
+                    this.PerformDeleteOperation(iter);
+                    operationType = "delete";
+                    extra = "";
+                }
+                
                 else
                 {
                     int selected = this.PerformSelectOperation(iter);

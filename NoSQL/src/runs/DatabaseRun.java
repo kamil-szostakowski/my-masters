@@ -74,6 +74,28 @@ public class DatabaseRun implements IDatabaseRun
     {
         return ((Long)this.configObject.get("insert_rate")).intValue();
     }
+    
+    /**
+     * Metoda umozliwia zdefiniowanie procentowy udział operacji update
+     * we wszystkich operacjach wykonywanych przez zadanie na bazie danych.
+     */    
+    
+    @Override
+    public int GetUpdateRate()
+    {
+        return ((Long)this.configObject.get("update_rate")).intValue();
+    }
+    
+    /**
+     * Metoda umozliwia zdefiniowanie procentowy udział operacji delete
+     * we wszystkich operacjach wykonywanych przez zadanie na bazie danych.
+     */    
+    
+    @Override
+    public int GetDeleteRate()
+    {
+        return ((Long)this.configObject.get("delete_rate")).intValue();
+    }    
 
     /*
      * Metoda pozwalajaca na zdefiniowanie na ilu wątkach ma zostać

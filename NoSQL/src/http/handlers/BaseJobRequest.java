@@ -3,7 +3,8 @@ package http.handlers;
 import basejobs.IDatabaseJob;
 import data.source.FileDataSource;
 import data.source.IDataSource;
-import data.source.XmlDataSource;
+import data.source.XmlRegionsDataSource;
+import data.source.XmlStreetsDataSource;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class BaseJobRequest
     
     protected void PrepareRun()
     {                
-        this.run = new DatabaseRun(String.format("%s-run.json", this.runName));        
+        this.run = new DatabaseRun(String.format("Runs/%s-run.json", this.runName));        
     }    
     
     /*
@@ -62,15 +63,9 @@ public class BaseJobRequest
     
     protected void PrepareDataSource()
     {                        
-        if(this.dataSourceName.equals("xml-street")) 
-        {            
-            this.dataSource = new XmlDataSource(); 
-        }
-        
-        else 
-        {             
-            this.dataSource = new FileDataSource("input2.txt"); 
-        }        
+        if(this.dataSourceName.equals("xml-street")) { this.dataSource = new XmlStreetsDataSource(); }        
+        else if(this.dataSourceName.equals("xml-region")) { this.dataSource = new XmlRegionsDataSource(); }        
+        else { this.dataSource = new FileDataSource("input2.txt"); }
     }
     
     /*
