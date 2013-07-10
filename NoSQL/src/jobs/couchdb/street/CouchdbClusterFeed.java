@@ -1,6 +1,7 @@
 package jobs.couchdb.street;
 
 import basejobs.IDatabaseJob;
+import basejobs.LogEntry;
 import data.source.XmlRegion;
 import data.source.XmlStreet;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import org.jcouchdb.document.ViewResult;
 /**
  * http://127.0.0.1:9080/db/couchdb/job/cluster-feed/run/cluster-insert/datasource/xml-street/id/feed-cluster-insert
  * http://127.0.0.1:9080/db/couchdb/job/cluster-feed/run/cluster-update/datasource/xml-region/id/feed-cluster-update
+ * http://127.0.0.1:9080/db/couchdb/job/cluster-feed/run/cluster-select/datasource/empty/id/feed-cluster-select
  * 
  * 02 - DOLNOŚLĄSKIE
  * 04 - KUJAWSKO-POMORSKIE
@@ -74,7 +76,28 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
     
     @Override
     public int PerformSelectOperation(int identifier)
-    {                  
+    {     
+        int dbIndex = identifier % this.supportedRegions.size();
+        int nodeIndex = this.randomizer.nextInt(3);
+        
+        String db = this.GetDatabaseNameForIndex(dbIndex);
+        String key = this.GetRandomCityKeyForIndex(dbIndex);
+        
+        if(db != null)
+        {
+            Map<String, Object> query = new HashMap<String, Object>();
+        
+            query.put ("key", key);            
+        
+            Options options = new Options(query);                      
+        
+            ViewResult<Map> result = this.shards.get(db).GetConnection(nodeIndex).queryView("streets/city-code", Map.class, options, null);
+                 
+            System.out.println(String.format("%s: %s", key, result.getTotalRows()));
+            
+            return result.getTotalRows();
+        }
+        
         return 0;
     }
     
@@ -128,7 +151,7 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
         int limit = 100;
         int counter = 0;
         
-        String db = this.GetDatabaseNameForIndex(identifier);
+        String db = this.GetDatabaseNameForIndex(identifier);               
         
         do
         {
@@ -137,9 +160,7 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
             counter++;
             offset = counter*limit;
             
-            this.SupplyDocumentsWithRegionInfo(db, result.getRows());
-            
-            System.out.println(String.format("Update operation performed: %s %d", db, result.getRows().size()));
+            this.SupplyDocumentsWithRegionInfo(db, result.getRows());                        
         } 
         
         while(result.getRows().size() > 0);     
@@ -174,12 +195,37 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
      */
     
     private String GetDatabaseNameForIndex(int index)
-    {        
+    {                        
         String[] keys = this.supportedRegions.keySet().toArray(new String[0]);
         
         if(index < keys.length)
         {            
             return this.GetDatabaseNameForCode(keys[index]);                    
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Metoda zwraca losowo generowany kod miejscowości na podstawie
+     * przekazanego jako parametr indeksu.           
+     * 
+     * @param index numer bazy danych do której ma zostać wykonane zapytanie
+     * @return losowy kod miejscowości
+     */
+    
+    private String GetRandomCityKeyForIndex(int index)
+    {
+        String[] keys = this.supportedRegions.keySet().toArray(new String[0]);
+        
+        if(index < keys.length)
+        {
+            String woj = keys[index];
+            String pow = String.format("%02d", this.randomizer.nextInt(20));
+            String gmi = String.format("%02d", this.randomizer.nextInt(20));
+            String rodzGmi = String.format("%d", this.randomizer.nextInt(10));
+            
+            return String.format("%s|%s|%s|%s", woj, pow, gmi, rodzGmi);
         }
         
         return null;
@@ -235,11 +281,15 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
      */
     
     private void SupplyDocumentsWithRegionInfo(String db, List<ValueRow<Map>> documents) 
-    {        
+    {   
+        long bulkUpdateStartTime = System.currentTimeMillis();
+        
         for(ValueRow<Map> document : documents)
         {            
             try 
             {
+                long documentUpdateStartTime = System.currentTimeMillis();
+                
                 Map doc = document.getValue();                                                
                 
                 HashMap<String, String> request = new HashMap<String, String>();
@@ -253,7 +303,7 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
                 
                  XmlRegion region = (XmlRegion) this.dataSource.GetData(request);                
                  
-                 if(region != null)
+                 if(region != null && !doc.containsKey("MIEJSCOWOSC_NAZWA") && !doc.containsKey("MIEJSCOWOSC_TYP"))
                  {
                      this.debugFoundRegions++;
                      
@@ -261,6 +311,14 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
                     doc.put("MIEJSCOWOSC_TYP", region.GetNazwaOd());                     
                     
                     this.shards.get(db).GetConnection(this.MainNodeIndex).updateDocument(doc);
+                    
+                    LogEntry documentEntry = new LogEntry();
+            
+                    documentEntry.SetOperationType("doc-update");
+                    documentEntry.SetOperationTime(System.currentTimeMillis()-documentUpdateStartTime);
+                    documentEntry.SetThreadId(this.threadID);
+
+                    this.WriteLog(documentEntry);
                  }                                                  
             } 
             
@@ -269,5 +327,14 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
                 Logger.getLogger(CouchdbClusterFeed.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        LogEntry bulkEntry = new LogEntry();
+            
+        bulkEntry.SetOperationType("bulk-update");
+        bulkEntry.SetOperationTime(System.currentTimeMillis()-bulkUpdateStartTime);
+        bulkEntry.SetThreadId(this.threadID);
+        bulkEntry.SetParameter("size", String.format("%d", documents.size()));
+        
+        this.WriteLog(bulkEntry);
     }
 }
