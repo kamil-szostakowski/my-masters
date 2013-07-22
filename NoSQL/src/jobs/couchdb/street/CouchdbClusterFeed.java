@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import org.jcouchdb.db.Options;
 import org.jcouchdb.document.ValueRow;
 import org.jcouchdb.document.ViewResult;
+import org.jcouchdb.exception.CouchDBException;
 
 /**
  * http://127.0.0.1:9080/db/couchdb/job/cluster-feed/run/cluster-insert/datasource/xml-street/id/feed-cluster-insert
@@ -77,7 +78,9 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
     @Override
     public int PerformSelectOperation(int identifier)
     {     
-        int dbIndex = identifier % this.supportedRegions.size();
+        long documentSelectStartTime = System.currentTimeMillis();                
+        
+        int dbIndex = identifier % this.supportedRegions.size();            
         int nodeIndex = this.randomizer.nextInt(3);
         
         String db = this.GetDatabaseNameForIndex(dbIndex);
@@ -89,13 +92,41 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
         
             query.put ("key", key);            
         
-            Options options = new Options(query);                      
-        
-            ViewResult<Map> result = this.shards.get(db).GetConnection(nodeIndex).queryView("streets/city-code", Map.class, options, null);
-                 
-            System.out.println(String.format("%s: %s", key, result.getTotalRows()));
+            Options options = new Options(query);  
             
-            return result.getTotalRows();
+            ViewResult<Map> result;
+            
+            for(int iter=0; iter<3; iter++)
+            {
+                try
+                {                                        
+                    result = this.shards.get(db).GetConnection(nodeIndex+iter).queryView("streets/city-code", Map.class, options, null);
+                    
+                    System.out.println(String.format("%s: %s", key, result.getRows().size()));
+            
+                    LogEntry logEntry = new LogEntry();
+            
+                    logEntry.SetOperationType("doc-select");
+                    logEntry.SetOperationTime(System.currentTimeMillis()-documentSelectStartTime);
+                    logEntry.SetThreadId(this.threadID);
+                    logEntry.SetParameter("database", db);
+                    logEntry.SetParameter("node", String.format("%d", dbIndex));
+                    logEntry.SetParameter("city-key", key);
+                    logEntry.SetParameter("result-count", String.format("%d", result.getRows().size()));
+                    logEntry.SetParameter("retry-count", String.format("%d", iter));
+
+                    this.WriteLog(logEntry);            
+            
+                    return result.getRows().size();                    
+                }
+                
+                catch(CouchDBException exception)
+                {                    
+                    System.out.println(String.format("RETRY CouchDBException %s:", exception.getMessage()));
+                }
+            }  
+            
+            System.out.println("Request failed: skipped");
         }
         
         return 0;
@@ -221,9 +252,9 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
         if(index < keys.length)
         {
             String woj = keys[index];
-            String pow = String.format("%02d", this.randomizer.nextInt(20));
-            String gmi = String.format("%02d", this.randomizer.nextInt(20));
-            String rodzGmi = String.format("%d", this.randomizer.nextInt(10));
+            String pow = String.format("%02d", this.randomizer.nextInt(15));
+            String gmi = String.format("%02d", this.randomizer.nextInt(15));
+            String rodzGmi = String.format("%d", this.randomizer.nextInt(5));
             
             return String.format("%s|%s|%s|%s", woj, pow, gmi, rodzGmi);
         }
