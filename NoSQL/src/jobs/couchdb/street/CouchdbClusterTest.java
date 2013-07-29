@@ -39,7 +39,7 @@ import org.jcouchdb.exception.CouchDBException;
  * @author kamil
  */
 
-public class CouchdbClusterFeed extends CouchdbClusterBaseJob
+public class CouchdbClusterTest extends CouchdbClusterBaseJob
 {           
     private int sequenceNumber = 0;
     
@@ -59,7 +59,7 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
      * Domyślny konstruktor budujący listę wspieranych baz danych.
      */
     
-    public CouchdbClusterFeed()
+    public CouchdbClusterTest()
     {
         this.supportedRegions = new HashMap<String, String>();
          
@@ -169,7 +169,7 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
         
         catch (Exception ex) 
         {
-            Logger.getLogger(CouchdbClusterFeed.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CouchdbClusterTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -212,7 +212,7 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
     @Override
     public IDatabaseJob Clone() 
     {
-        return new CouchdbClusterFeed();
+        return new CouchdbClusterTest();
     }
     
     /**
@@ -355,7 +355,7 @@ public class CouchdbClusterFeed extends CouchdbClusterBaseJob
             
             catch (Exception ex) 
             {
-                Logger.getLogger(CouchdbClusterFeed.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CouchdbClusterTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         

@@ -7,7 +7,7 @@ import jobs.couchdb.CouchdbSchemaJob;
 import jobs.couchdb.CouchdbTestJob;
 import java.io.IOException;
 import java.io.OutputStream;
-import jobs.couchdb.street.CouchdbClusterFeed;
+import jobs.couchdb.street.CouchdbClusterTest;
 import nosql.DBTestRunner;
 
 /**
@@ -31,7 +31,7 @@ public class CouchdbJobRequest extends BaseJobRequest implements HttpHandler
         if(super.jobName.equals("prepare")) { this.job = new CouchdbPrepareJob(); }
         if(super.jobName.equals("schema")) { this.job = new CouchdbSchemaJob(); }
         if(super.jobName.equals("test")) { this.job = new CouchdbTestJob(); }   
-        if(super.jobName.equals("cluster-feed")) { this.job = new CouchdbClusterFeed(); }   
+        if(super.jobName.equals("cluster-feed")) { this.job = new CouchdbClusterTest(); }   
     }         
     
     /*
