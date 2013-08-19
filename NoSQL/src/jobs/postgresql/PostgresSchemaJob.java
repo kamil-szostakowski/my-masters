@@ -12,12 +12,14 @@ import java.util.logging.Logger;
  * Utworzenie tabeli do któej będą insertowane później dokumenty przez
  * pozostałe zadania testowe.
  * 
+ * http://127.0.0.1:9080/db/postgresql/job/schema/run/schema/datasource/file/id/postgresql-schema
+ * 
  * @author Kamil Szostakowski
  */
 
 public class PostgresSchemaJob extends PostgresBaseJob
 {
-    private String schema = "CREATE TABLE document(id integer NOT NULL, threadid integer, title character varying(200), content text)";         
+    private String schema = "CREATE TABLE document(id varchar(200) NOT NULL, threadid integer, title character varying(200), content text)";         
     
     /*
      * Utworzenie tabeli na dokumenty.

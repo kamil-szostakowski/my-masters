@@ -3,7 +3,7 @@
     "insert_rate": 25,
     "update_rate": 0,
     "delete_rate": 0,    
-    "threads": 6,
-    "iterations": 50,
-    "documents_per_select": 20
+    "threads": 10,
+    "iterations": 100000,
+    "documents_per_select": 0
 }

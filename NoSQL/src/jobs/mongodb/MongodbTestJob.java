@@ -11,6 +11,10 @@ import java.util.logging.Logger;
  * podczas wykonywania operacji select/insert w proporcjach zdefiniowanych
  * przez przebieg przypisany tenu zadaniu.
  * 
+ * http://127.0.0.1:9080/db/mongodb/job/test/run/singleload/datasource/file/id/mongodb-load
+ * http://127.0.0.1:9080/db/mongodb/job/test/run/test75/datasource/file/id/mongodb-mixed
+ * http://127.0.0.1:9080/db/mongodb/job/test/run/test100/datasource/file/id/mongodb-read
+ * 
  * @author Kamil Szostakowski
  */
 
@@ -22,8 +26,13 @@ public class MongodbTestJob extends MongodbBaseJob
     
     @Override
     public int PerformSelectOperation(int identifier)
-    {            
-        BasicDBObject query = new BasicDBObject("id", new BasicDBObject("$in", this.GetDocumentListForIter(identifier)));
+    {         
+        int thread = this.randomizer.nextInt(10);
+        int operation = this.randomizer.nextInt(100000);
+            
+        String id = String.format("%d-%d", thread, operation); 
+        
+        BasicDBObject query = new BasicDBObject("id", id);
         
         DBCursor cursor = this.collection.find(query);
         
@@ -61,7 +70,7 @@ public class MongodbTestJob extends MongodbBaseJob
         {
             BasicDBObject document = new BasicDBObject();
             
-            document.append("id", identifier);
+            document.append("id", String.format("%d-%d", this.threadID, identifier));
             document.append("threadid", this.threadID);
             document.append("title", String.format("Title %d", identifier));
             document.append("content", this.dataSource.GetData(identifier));        
